@@ -110,7 +110,9 @@ func TestParse(t *testing.T) {
 	})
 
 	ttng.Run(func(test tests.Test[string, *[]lexis.Token], position int) {
-		tokens, err := lexis.Parse(test.Input)
+		lexer := lexis.NewLexer(test.Input)
+		tokens, err := lexer.Parse()
+
 		if err != nil {
 			t.Error(test.ModuleError(err.Error()))
 			return

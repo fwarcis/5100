@@ -18,7 +18,9 @@ func main() {
 			log.Println(err.Error())
 		}
 
-		tokens, err := lexis.Parse(input)
+		lexer := lexis.NewLexer(input)
+
+		tokens, err := lexer.Parse()
 		if err != nil {
 			log.Println(err.Error())
 		}

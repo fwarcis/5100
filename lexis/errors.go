@@ -19,3 +19,11 @@ type ErrUnexpectedChar struct {
 func (err *ErrUnexpectedChar) Error() string {
 	return fmt.Sprintf("lexis:%d: unexpected char '%s'", err.position, err.char)
 }
+
+type ErrNoMoreTokens struct {
+	position int
+}
+
+func (err *ErrNoMoreTokens) Error() string {
+	return fmt.Sprintf("lexis:%d: no more tokens", err.position)
+}
