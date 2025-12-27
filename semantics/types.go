@@ -12,6 +12,10 @@ type Number struct {
 	value float64
 }
 
+func NewNumber(value float64) *Number {
+	return &Number{value}
+}
+
 func (number *Number) Evaluate() float64 {
 	slog.Debug("%d", slog.Float64("evaluate: ", number.value))
 	return number.value
@@ -22,6 +26,22 @@ type BinaryOperatorFunc func(left, right float64) float64
 type BinaryOperator struct {
 	left, right Expression
 	operate     BinaryOperatorFunc
+}
+
+func NewPlus(left, right Expression) *BinaryOperator {
+	return &BinaryOperator{left, right, Sum}
+}
+
+func NewMinus(left, right Expression) *BinaryOperator {
+	return &BinaryOperator{left, right, Sub}
+}
+
+func NewMultiplication(left, right Expression) *BinaryOperator {
+	return &BinaryOperator{left, right, Mul}
+}
+
+func NewDivision(left, right Expression) *BinaryOperator {
+	return &BinaryOperator{left, right, Div}
 }
 
 func (binOp *BinaryOperator) Evaluate() float64 {
