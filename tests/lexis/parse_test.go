@@ -31,7 +31,7 @@ func TestParse(t *testing.T) {
 			Input: "+3-4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("+3"),
-				*lexis.NewMinus(),
+				*lexis.NewPlus(),
 				*lexis.NewNumber("-4"),
 			},
 		},
@@ -39,7 +39,7 @@ func TestParse(t *testing.T) {
 			Input: "-3-4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewMinus(),
+				*lexis.NewPlus(),
 				*lexis.NewNumber("-4"),
 			},
 		},
@@ -71,7 +71,7 @@ func TestParse(t *testing.T) {
 			Input: "-3*-4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewDivision(),
+				*lexis.NewMultiplication(),
 				*lexis.NewNumber("-4"),
 			},
 		},

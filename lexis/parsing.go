@@ -12,20 +12,13 @@ const (
 	DigitOrBinOp
 )
 
-type numberSign string
-
-const (
-	minusSign numberSign = "-"
-	plusSign  numberSign = "+"
-)
-
-var numberSigns = []numberSign{minusSign, plusSign}
+var numberSigns = []string{"-", "+"}
 
 func Parse(text string) (*[]Token, error) {
 	runes := []rune(text)
 	tokens := []Token{}
 	digits := ""
-	numSign := plusSign
+	numSign := "+"
 	state := SignOrDigit
 	for i, r := range runes {
 		char := string(r)
@@ -38,29 +31,29 @@ func Parse(text string) (*[]Token, error) {
 
 		switch state {
 		case SignOrDigit:
-			if numSign == minusSign && r == '-' || numSign == plusSign && r == '+' {
-				numSign = plusSign
-			} else if numSign == plusSign && r == '-' || numSign == minusSign && r == '+' {
-				numSign = minusSign
+			if numSign == "-" && char == "-" || numSign == "+" && char == "+" {
+				numSign = "+"
+			} else if numSign == "+" && char == "-" || numSign == "-" && char == "+" {
+				numSign = "-"
 			} else if unicode.IsDigit(r) {
-				digits += string(r)
+				digits += char
 			}
 			state = DigitOrBinOp
 		case DigitOrBinOp:
 			if unicode.IsDigit(r) {
-				digits += string(r)
-			} else if slices.Contains(binOpValues, string(r)) {
-				binOpVal := string(r)
-				if binOpVal == "-" {
-					binOpVal = "+"
+				digits += char
+			} else if slices.Contains(binOpValues, BinOpValue(r)) {
+				binOpVal := BinOpValue(r)
+				if binOpVal == MinusValue {
+					binOpVal = PlusValue
 				}
 				tokens = append(tokens, *NewNumber(string(numSign) + digits))
 				tokens = append(tokens, *binOps[binOpVal]())
 				digits = ""
-				if string(r) == "-" {
-					numSign = minusSign
+				if char == "-" {
+					numSign = "-"
 				} else {
-					numSign = plusSign
+					numSign = "+"
 				}
 				state = SignOrDigit
 			}
@@ -75,17 +68,17 @@ func Parse(text string) (*[]Token, error) {
 
 func unexpected(r rune) bool {
 	return !unicode.IsDigit(r) &&
-		!slices.Contains(binOpValues, string(r))
+		!slices.Contains(binOpValues, BinOpValue(r))
 }
 
 func illegal(r rune, state parsingState) bool {
 	switch state {
 	case SignOrDigit:
-		if !slices.Contains(numberSigns, numberSign(r)) && !unicode.IsDigit(r) {
+		if !slices.Contains(numberSigns, string(r)) && !unicode.IsDigit(r) {
 			return true
 		}
 	case DigitOrBinOp:
-		if !slices.Contains(binOpValues, string(r)) && !unicode.IsDigit(r) {
+		if !slices.Contains(binOpValues, BinOpValue(r)) && !unicode.IsDigit(r) {
 			return true
 		}
 	}

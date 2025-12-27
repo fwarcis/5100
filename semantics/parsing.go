@@ -23,6 +23,6 @@ func Parse(tokens []lexis.Token) Expression {
 	return &BinaryOperator{
 		left:    Parse(tokens[:relativePosition]),
 		right:   Parse(tokens[relativePosition+1:]),
-		operate: BinOpsFuncs[firstMinPriorityToken.Value],
+		operate: BinOpFuncs[lexis.BinOpValue(firstMinPriorityToken.Value)],
 	}
 }

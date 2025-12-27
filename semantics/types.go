@@ -1,8 +1,21 @@
 package semantics
 
 import (
+	"5100/lexis"
 	"log/slog"
 )
+
+var BinOpFuncs = map[lexis.BinOpValue]BinaryOperatorFunc{
+	lexis.PlusValue: sum,
+	lexis.MinusValue: sub,
+	lexis.MulValue: mul,
+	lexis.DivValue: div,
+}
+
+func sum(a, b float64) float64 { return a + b }
+func sub(a, b float64) float64 { return a - b }
+func mul(a, b float64) float64 { return a * b }
+func div(a, b float64) float64 { return a / b }
 
 type Expression interface {
 	Evaluate() float64
@@ -29,19 +42,19 @@ type BinaryOperator struct {
 }
 
 func NewPlus(left, right Expression) *BinaryOperator {
-	return &BinaryOperator{left, right, Sum}
+	return &BinaryOperator{left, right, sum}
 }
 
 func NewMinus(left, right Expression) *BinaryOperator {
-	return &BinaryOperator{left, right, Sub}
+	return &BinaryOperator{left, right, sub}
 }
 
 func NewMultiplication(left, right Expression) *BinaryOperator {
-	return &BinaryOperator{left, right, Mul}
+	return &BinaryOperator{left, right, mul}
 }
 
 func NewDivision(left, right Expression) *BinaryOperator {
-	return &BinaryOperator{left, right, Div}
+	return &BinaryOperator{left, right, div}
 }
 
 func (binOp *BinaryOperator) Evaluate() float64 {
@@ -50,14 +63,3 @@ func (binOp *BinaryOperator) Evaluate() float64 {
 	return value
 }
 
-func Sum(a, b float64) float64 { return a + b }
-func Sub(a, b float64) float64 { return a - b }
-func Mul(a, b float64) float64 { return a * b }
-func Div(a, b float64) float64 { return a / b }
-
-var BinOpsFuncs = map[string]BinaryOperatorFunc{
-	"+": Sum,
-	"-": Sub,
-	"*": Mul,
-	"/": Div,
-}

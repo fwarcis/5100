@@ -6,22 +6,31 @@ type TokenType string
 
 const (
 	NumberType TokenType = "Number"
-	BinOpType            = "BinOpr"
+	BinOpType  TokenType = "BinOpr"
 )
 
-var binOps = map[string](func() *Token){
-	"+": NewPlus,
-	"-": NewMinus,
-	"*": NewMultiplication,
-	"/": NewDivision,
+type BinOpValue string
+
+const (
+	PlusValue  BinOpValue = "+"
+	MinusValue BinOpValue = "-"
+	MulValue   BinOpValue = "*"
+	DivValue   BinOpValue = "/"
+)
+
+var binOps = map[BinOpValue](func() *Token){
+	PlusValue:  NewPlus,
+	MinusValue: NewMinus,
+	MulValue:   NewMultiplication,
+	DivValue:   NewDivision,
 }
 
-var binOpValues []string = func() []string {
-	res := []string{}
+var binOpValues []BinOpValue = *func() *[]BinOpValue {
+	res := []BinOpValue{}
 	for op := range binOps {
 		res = append(res, op)
 	}
-	return res
+	return &res
 }()
 
 type Token struct {
@@ -49,7 +58,7 @@ func NewNumber(value string) *Token {
 
 func NewPlus() *Token {
 	return &Token{
-		Value:    "+",
+		Value:    string(PlusValue),
 		Type:     BinOpType,
 		Priority: 1,
 	}
@@ -57,7 +66,7 @@ func NewPlus() *Token {
 
 func NewMinus() *Token {
 	return &Token{
-		Value:    "-",
+		Value:    string(MinusValue),
 		Type:     BinOpType,
 		Priority: 1,
 	}
@@ -65,7 +74,7 @@ func NewMinus() *Token {
 
 func NewMultiplication() *Token {
 	return &Token{
-		Value:    "*",
+		Value:    string(MulValue),
 		Type:     BinOpType,
 		Priority: 2,
 	}
@@ -73,7 +82,7 @@ func NewMultiplication() *Token {
 
 func NewDivision() *Token {
 	return &Token{
-		Value:    "/",
+		Value:    string(DivValue),
 		Type:     BinOpType,
 		Priority: 2,
 	}
