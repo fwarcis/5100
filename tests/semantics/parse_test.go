@@ -12,7 +12,7 @@ func TestParse(t *testing.T) {
 		{
 			Input: &[]lexis.Token{
 				*lexis.NewNumber("+3"),
-				*lexis.NewBinaryOperator("+"),
+				*lexis.NewPlus(),
 				*lexis.NewNumber("+4"),
 			},
 			Expected: semantics.NewPlus(
@@ -23,7 +23,7 @@ func TestParse(t *testing.T) {
 		{
 			Input: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewBinaryOperator("+"),
+				*lexis.NewPlus(),
 				*lexis.NewNumber("+4"),
 			},
 			Expected: semantics.NewPlus(
@@ -34,7 +34,7 @@ func TestParse(t *testing.T) {
 		{
 			Input: &[]lexis.Token{
 				*lexis.NewNumber("+3"),
-				*lexis.NewBinaryOperator("-"),
+				*lexis.NewMinus(),
 				*lexis.NewNumber("+4"),
 			},
 			Expected: semantics.NewMinus(
@@ -45,7 +45,7 @@ func TestParse(t *testing.T) {
 		{
 			Input: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewBinaryOperator("-"),
+				*lexis.NewMinus(),
 				*lexis.NewNumber("+4"),
 			},
 			Expected: semantics.NewMinus(
@@ -56,7 +56,7 @@ func TestParse(t *testing.T) {
 		{
 			Input: &[]lexis.Token{
 				*lexis.NewNumber("+3"),
-				*lexis.NewBinaryOperator("-"),
+				*lexis.NewMinus(),
 				*lexis.NewNumber("-4"),
 			},
 			Expected: semantics.NewMinus(
@@ -67,7 +67,7 @@ func TestParse(t *testing.T) {
 		{
 			Input: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewBinaryOperator("-"),
+				*lexis.NewMinus(),
 				*lexis.NewNumber("-4"),
 			},
 			Expected: semantics.NewMinus(
@@ -78,7 +78,7 @@ func TestParse(t *testing.T) {
 		{
 			Input: &[]lexis.Token{
 				*lexis.NewNumber("+3"),
-				*lexis.NewBinaryOperator("*"),
+				*lexis.NewMultiplication(),
 				*lexis.NewNumber("+4"),
 			},
 			Expected: semantics.NewMultiplication(
@@ -89,7 +89,7 @@ func TestParse(t *testing.T) {
 		{
 			Input: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewBinaryOperator("*"),
+				*lexis.NewMultiplication(),
 				*lexis.NewNumber("+4"),
 			},
 			Expected: semantics.NewMultiplication(
@@ -100,7 +100,7 @@ func TestParse(t *testing.T) {
 		{
 			Input: &[]lexis.Token{
 				*lexis.NewNumber("+3"),
-				*lexis.NewBinaryOperator("*"),
+				*lexis.NewMultiplication(),
 				*lexis.NewNumber("-4"),
 			},
 			Expected: semantics.NewMultiplication(
@@ -111,7 +111,7 @@ func TestParse(t *testing.T) {
 		{
 			Input: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewBinaryOperator("*"),
+				*lexis.NewMultiplication(),
 				*lexis.NewNumber("-4"),
 			},
 			Expected: semantics.NewMultiplication(
@@ -122,7 +122,7 @@ func TestParse(t *testing.T) {
 		{
 			Input: &[]lexis.Token{
 				*lexis.NewNumber("+3"),
-				*lexis.NewBinaryOperator("/"),
+				*lexis.NewDivision(),
 				*lexis.NewNumber("+4"),
 			},
 			Expected: semantics.NewDivision(
@@ -133,7 +133,7 @@ func TestParse(t *testing.T) {
 		{
 			Input: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewBinaryOperator("/"),
+				*lexis.NewDivision(),
 				*lexis.NewNumber("+4"),
 			},
 			Expected: semantics.NewDivision(
@@ -144,7 +144,7 @@ func TestParse(t *testing.T) {
 		{
 			Input: &[]lexis.Token{
 				*lexis.NewNumber("+3"),
-				*lexis.NewBinaryOperator("/"),
+				*lexis.NewDivision(),
 				*lexis.NewNumber("-4"),
 			},
 			Expected: semantics.NewDivision(
@@ -155,7 +155,7 @@ func TestParse(t *testing.T) {
 		{
 			Input: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewBinaryOperator("/"),
+				*lexis.NewDivision(),
 				*lexis.NewNumber("-4"),
 			},
 			Expected: semantics.NewDivision(

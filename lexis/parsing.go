@@ -5,18 +5,27 @@ import (
 	"unicode"
 )
 
+type parsingState int
+
 const (
-	SignOrDigit = iota
+	SignOrDigit parsingState = iota
 	DigitOrBinOp
 )
 
-var numSigns = []rune{'+', '-'}
+type numberSign string
+
+const (
+	minusSign numberSign = "-"
+	plusSign  numberSign = "+"
+)
+
+var numberSigns = []numberSign{minusSign, plusSign}
 
 func Parse(text string) (*[]Token, error) {
 	runes := []rune(text)
 	tokens := []Token{}
 	digits := ""
-	numSign := "+"
+	numSign := plusSign
 	state := SignOrDigit
 	for i, r := range runes {
 		char := string(r)
@@ -29,10 +38,10 @@ func Parse(text string) (*[]Token, error) {
 
 		switch state {
 		case SignOrDigit:
-			if numSign == "-" && r == '-' || numSign == "+" && r == '+' {
-				numSign = "+"
-			} else if numSign == "+" && r == '-' || numSign == "-" && r == '+' {
-				numSign = "-"
+			if numSign == minusSign && r == '-' || numSign == plusSign && r == '+' {
+				numSign = plusSign
+			} else if numSign == plusSign && r == '-' || numSign == minusSign && r == '+' {
+				numSign = minusSign
 			} else if unicode.IsDigit(r) {
 				digits += string(r)
 			}
@@ -45,20 +54,20 @@ func Parse(text string) (*[]Token, error) {
 				if binOpVal == "-" {
 					binOpVal = "+"
 				}
-				tokens = append(tokens, *NewNumber(numSign + digits))
-				tokens = append(tokens, *NewBinaryOperator(binOpVal))
+				tokens = append(tokens, *NewNumber(string(numSign) + digits))
+				tokens = append(tokens, *binOps[binOpVal]())
 				digits = ""
 				if string(r) == "-" {
-					numSign = "-"
+					numSign = minusSign
 				} else {
-					numSign = "+"
+					numSign = plusSign
 				}
 				state = SignOrDigit
 			}
 		}
 
 		if i+1 == len(runes) {
-			tokens = append(tokens, *NewNumber(numSign + digits))
+			tokens = append(tokens, *NewNumber(string(numSign) + digits))
 		}
 	}
 	return &tokens, nil
@@ -69,10 +78,10 @@ func unexpected(r rune) bool {
 		!slices.Contains(binOpValues, string(r))
 }
 
-func illegal(r rune, state int) bool {
+func illegal(r rune, state parsingState) bool {
 	switch state {
 	case SignOrDigit:
-		if !slices.Contains(numSigns, r) && !unicode.IsDigit(r) {
+		if !slices.Contains(numberSigns, numberSign(r)) && !unicode.IsDigit(r) {
 			return true
 		}
 	case DigitOrBinOp:

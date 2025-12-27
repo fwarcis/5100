@@ -15,7 +15,7 @@ func TestParse(t *testing.T) {
 			Input: "3+4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("+3"),
-				*lexis.NewBinaryOperator("+"),
+				*lexis.NewPlus(),
 				*lexis.NewNumber("+4"),
 			},
 		},
@@ -23,7 +23,7 @@ func TestParse(t *testing.T) {
 			Input: "-3+4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewBinaryOperator("+"),
+				*lexis.NewPlus(),
 				*lexis.NewNumber("+4"),
 			},
 		},
@@ -31,7 +31,7 @@ func TestParse(t *testing.T) {
 			Input: "+3-4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("+3"),
-				*lexis.NewBinaryOperator("+"),
+				*lexis.NewMinus(),
 				*lexis.NewNumber("-4"),
 			},
 		},
@@ -39,7 +39,7 @@ func TestParse(t *testing.T) {
 			Input: "-3-4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewBinaryOperator("+"),
+				*lexis.NewMinus(),
 				*lexis.NewNumber("-4"),
 			},
 		},
@@ -47,7 +47,7 @@ func TestParse(t *testing.T) {
 			Input: "3*4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("+3"),
-				*lexis.NewBinaryOperator("*"),
+				*lexis.NewMultiplication(),
 				*lexis.NewNumber("+4"),
 			},
 		},
@@ -55,7 +55,7 @@ func TestParse(t *testing.T) {
 			Input: "-3*4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewBinaryOperator("*"),
+				*lexis.NewMultiplication(),
 				*lexis.NewNumber("+4"),
 			},
 		},
@@ -63,7 +63,7 @@ func TestParse(t *testing.T) {
 			Input: "3*-4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("+3"),
-				*lexis.NewBinaryOperator("*"),
+				*lexis.NewMultiplication(),
 				*lexis.NewNumber("-4"),
 			},
 		},
@@ -71,7 +71,7 @@ func TestParse(t *testing.T) {
 			Input: "-3*-4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewBinaryOperator("*"),
+				*lexis.NewDivision(),
 				*lexis.NewNumber("-4"),
 			},
 		},
@@ -79,7 +79,7 @@ func TestParse(t *testing.T) {
 			Input: "3/4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("+3"),
-				*lexis.NewBinaryOperator("/"),
+				*lexis.NewDivision(),
 				*lexis.NewNumber("+4"),
 			},
 		},
@@ -87,7 +87,7 @@ func TestParse(t *testing.T) {
 			Input: "-3/4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewBinaryOperator("/"),
+				*lexis.NewDivision(),
 				*lexis.NewNumber("+4"),
 			},
 		},
@@ -95,7 +95,7 @@ func TestParse(t *testing.T) {
 			Input: "3/-4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("+3"),
-				*lexis.NewBinaryOperator("/"),
+				*lexis.NewDivision(),
 				*lexis.NewNumber("-4"),
 			},
 		},
@@ -103,7 +103,7 @@ func TestParse(t *testing.T) {
 			Input: "-3/4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewBinaryOperator("/"),
+				*lexis.NewDivision(),
 				*lexis.NewNumber("+4"),
 			},
 		},

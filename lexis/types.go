@@ -5,18 +5,20 @@ import "fmt"
 type TokenType string
 
 const (
-	NumberType  TokenType = "Number"
-	BinOpType             = "BinOpr"
+	NumberType TokenType = "Number"
+	BinOpType            = "BinOpr"
 )
 
-var binOpsPriorities = map[string]int{
-	"+": 1, "-": 1,
-	"*": 2, "/": 2,
+var binOps = map[string](func() *Token){
+	"+": NewPlus,
+	"-": NewMinus,
+	"*": NewMultiplication,
+	"/": NewDivision,
 }
 
 var binOpValues []string = func() []string {
 	res := []string{}
-	for op := range binOpsPriorities {
+	for op := range binOps {
 		res = append(res, op)
 	}
 	return res
@@ -45,10 +47,34 @@ func NewNumber(value string) *Token {
 	}
 }
 
-func NewBinaryOperator(value string) *Token {
+func NewPlus() *Token {
 	return &Token{
-		Value:    value,
+		Value:    "+",
 		Type:     BinOpType,
-		Priority: binOpsPriorities[value],
+		Priority: 1,
+	}
+}
+
+func NewMinus() *Token {
+	return &Token{
+		Value:    "-",
+		Type:     BinOpType,
+		Priority: 1,
+	}
+}
+
+func NewMultiplication() *Token {
+	return &Token{
+		Value:    "*",
+		Type:     BinOpType,
+		Priority: 2,
+	}
+}
+
+func NewDivision() *Token {
+	return &Token{
+		Value:    "/",
+		Type:     BinOpType,
+		Priority: 2,
 	}
 }
