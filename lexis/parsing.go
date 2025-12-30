@@ -1,6 +1,7 @@
 package lexis
 
 import (
+	"5100/lexis/lexiserrs"
 	"slices"
 	"unicode"
 )
@@ -36,9 +37,9 @@ func (lex *Lexer) Parse() (*[]Token, error) {
 		lex.char = string(lex.rn)
 
 		if !lex.state.Valid() {
-			return nil, &ErrIllegalChar{char: lex.char, position: lex.position}
+			return nil, &lexiserrs.ErrIllegalChar{Char: lex.char, Position: lex.position}
 		} else if unexpected(lex.rn) {
-			return nil, &ErrUnexpectedChar{char: lex.char, position: lex.position}
+			return nil, &lexiserrs.ErrUnexpectedChar{Char: lex.char, Position: lex.position}
 		} 
 
 		lex.state.Handle()
