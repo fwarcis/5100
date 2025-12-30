@@ -7,7 +7,7 @@ func sprefixf(format string, position int, a ...any) string {
 }
 
 type ErrIllegalChar struct {
-	Char     string
+	Char     rune
 	Position int
 }
 
@@ -16,7 +16,7 @@ func (e *ErrIllegalChar) Error() string {
 }
 
 type ErrUnexpectedChar struct {
-	Char     string
+	Char     rune
 	Position int
 }
 

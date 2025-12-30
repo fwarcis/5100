@@ -11,47 +11,45 @@ var numberSigns = []string{"-", "+"}
 type Lexer struct {
 	runes []rune
 	
-	position int
-	tokens []Token
-	rn rune
-	char string
-
 	state parsingState
-	numSign string
+	char rune
+	numSign rune
 	digits string
+	
+	tokens []Token
 }
 
 func NewLexer(text string) *Lexer {
-	lexer := &Lexer{
+	l := &Lexer{
 		runes: []rune(text),
-		numSign: "+",
+		numSign: '+',
 	}
-	lexer.state = &stateSignOrDigit{lexer}
-	
-	return lexer
+	l.state = &stateSignOrDigit{l}
+	return l
 }
 
-func (lex *Lexer) Parse() (*[]Token, error) {
-	for lex.position = range lex.runes {
-		lex.rn = lex.runes[lex.position]
-		lex.char = string(lex.rn)
+func (l *Lexer) Parse() (*[]Token, error) {
+	pos := 0
+	for i, r := range l.runes {
+		l.char = r
+		pos = i
 
-		if !lex.state.Valid() {
-			return nil, &lexiserrs.ErrIllegalChar{Char: lex.char, Position: lex.position}
-		} else if unexpected(lex.rn) {
-			return nil, &lexiserrs.ErrUnexpectedChar{Char: lex.char, Position: lex.position}
+		if !l.state.Valid() {
+			return nil, &lexiserrs.ErrIllegalChar{Char: r, Position: i}
+		} else if unexpected(r) {
+			return nil, &lexiserrs.ErrUnexpectedChar{Char: r, Position: i}
 		} 
 
-		lex.state.Handle()
+		l.state.Handle()
 	}
 
-	if lex.position+1 == len(lex.runes) {
-		lex.tokens = append(
-			lex.tokens,
-			*NewNumber(string(lex.numSign) + lex.digits))
+	if pos+1 == len(l.runes) {
+		l.tokens = append(
+			l.tokens,
+			*NewNumber(string(l.numSign) + l.digits))
 	}
 
-	return &lex.tokens, nil
+	return &l.tokens, nil
 }
 
 func unexpected(r rune) bool {
