@@ -26,7 +26,7 @@ func NewLexer(text string) *Lexer {
 		runes: []rune(text),
 		numSign: "+",
 	}
-	lexer.state = &signOrDigitState{lexer}
+	lexer.state = &stateSignOrDigit{lexer}
 	
 	return lexer
 }

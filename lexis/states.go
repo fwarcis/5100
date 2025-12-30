@@ -10,11 +10,11 @@ type parsingState interface {
 	Valid() bool
 }
 
-type signOrDigitState struct {
+type stateSignOrDigit struct {
 	lex *Lexer
 }
 
-func (s *signOrDigitState) Handle() {
+func (s *stateSignOrDigit) Handle() {
 	if s.lex.numSign == "-" && s.lex.char == "-" ||
 		s.lex.numSign == "+" && s.lex.char == "+" {
 		s.lex.numSign = "+"
@@ -25,19 +25,19 @@ func (s *signOrDigitState) Handle() {
 		s.lex.digits += s.lex.char
 	}
 
-	s.lex.state = &digitOrBinOpState{s.lex}
+	s.lex.state = &stateDigitOrBinOp{s.lex}
 }
 
-func (s *signOrDigitState) Valid() bool {
+func (s *stateSignOrDigit) Valid() bool {
 	return slices.Contains(numberSigns, string(s.lex.rn)) ||
 			unicode.IsDigit(s.lex.rn)
 }
 
-type digitOrBinOpState struct {
+type stateDigitOrBinOp struct {
 	lex *Lexer
 }
 
-func (s *digitOrBinOpState) Handle() {
+func (s *stateDigitOrBinOp) Handle() {
 	if unicode.IsDigit(s.lex.rn) {
 		s.lex.digits += s.lex.char
 	} else if slices.Contains(binOpValues, BinOpValue(s.lex.rn)) {
@@ -55,11 +55,11 @@ func (s *digitOrBinOpState) Handle() {
 		} else {
 			s.lex.numSign = "+"
 		}
-		s.lex.state = &signOrDigitState{s.lex}
+		s.lex.state = &stateSignOrDigit{s.lex}
 	}
 }
 
-func (s *digitOrBinOpState) Valid() bool {
+func (s *stateDigitOrBinOp) Valid() bool {
 	return slices.Contains(binOpValues, BinOpValue(s.lex.rn)) ||
 			unicode.IsDigit(s.lex.rn)
 }
