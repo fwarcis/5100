@@ -1,7 +1,6 @@
 package lexis
 
 import (
-	"fmt"
 	"slices"
 	"unicode"
 )
@@ -45,7 +44,10 @@ func (s *ParsingState) handle(ctx *parsingContext) ([]Token, error) {
 			return tokens, nil
 		}
 	}
-	return tokens, fmt.Errorf("lexis: at %d: %s expected", ctx.Position, s.expectedTokTypes)
+	return tokens, &UnexpectedTokenError{
+		Position: ctx.Position,
+		Expecteds: ctx.State.expectedTokTypes,
+	}
 }
 
 
