@@ -23,6 +23,7 @@ func main() {
 		tokens, err := lexer.Parse()
 		if err != nil {
 			fmt.Println(err.Error())
+			continue
 		}
 		expr := semantics.Parse(tokens)
 		result := expr.Evaluate()
