@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 
 	"5100/lexis"
 	"5100/semantics"
@@ -15,7 +14,8 @@ func main() {
 
 		_, err = fmt.Scanln(&input)
 		if err != nil {
-			log.Println(err.Error())
+			fmt.Println(err.Error())
+			continue
 		}
 
 		lexer := lexis.NewLexer(input, *lexis.NewValueState())
