@@ -10,6 +10,7 @@ import (
 func main() {
 	var err error
 	for input := ""; input != "exit"; {
+		fmt.Println()
 		fmt.Print("<< ")
 
 		_, err = fmt.Scanln(&input)
@@ -29,6 +30,5 @@ func main() {
 		result := expr.Evaluate()
 
 		fmt.Println(">>", result)
-		fmt.Println()
 	}
 }
