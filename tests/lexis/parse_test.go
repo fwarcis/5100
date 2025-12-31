@@ -8,7 +8,6 @@ import (
 	"5100/tests"
 )
 
-
 func TestParse(t *testing.T) {
 	ttng := tests.NewTesting(t, []tests.Test[string, *[]lexis.Token]{
 		{
@@ -31,16 +30,16 @@ func TestParse(t *testing.T) {
 			Input: "+3-4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("+3"),
-				*lexis.NewPlus(),
-				*lexis.NewNumber("-4"),
+				*lexis.NewMinus(),
+				*lexis.NewNumber("+4"),
 			},
 		},
 		{
 			Input: "-3-4",
 			Expected: &[]lexis.Token{
 				*lexis.NewNumber("-3"),
-				*lexis.NewPlus(),
-				*lexis.NewNumber("-4"),
+				*lexis.NewMinus(),
+				*lexis.NewNumber("+4"),
 			},
 		},
 		{
@@ -110,27 +109,26 @@ func TestParse(t *testing.T) {
 	})
 
 	ttng.Run(func(test tests.Test[string, *[]lexis.Token], position int) {
-		lexer := lexis.NewLexer(test.Input)
+		lexer := lexis.NewLexer(test.Input, *lexis.NewValueState())
 		tokens, err := lexer.Parse()
-
 		if err != nil {
 			t.Error(test.ModuleError(err.Error()))
 			return
 		}
-		if len(*tokens) != len(*test.Expected) {
+		if len(tokens) != len(*test.Expected) {
 			t.Error(test.WantGotError(
 				position,
 				fmt.Sprintf("len = %d", len(*test.Expected)),
-				fmt.Sprintf("len = %d", len(*tokens)),
+				fmt.Sprintf("len = %d", len(tokens)),
 			))
 			fmt.Println(tokens)
 		}
-		for i := range *tokens {
-			if (*tokens)[i] != (*test.Expected)[i] {
+		for i := range tokens {
+			if tokens[i] != (*test.Expected)[i] {
 				t.Error(test.WantGotError(
 					position,
 					(*test.Expected)[i],
-					(*tokens)[i]),
+					(tokens)[i]),
 				)
 			}
 		}

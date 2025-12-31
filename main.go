@@ -18,13 +18,13 @@ func main() {
 			log.Println(err.Error())
 		}
 
-		lexer := lexis.NewLexer(input)
+		lexer := lexis.NewLexer(input, *lexis.NewValueState())
 
 		tokens, err := lexer.Parse()
 		if err != nil {
-			log.Println(err.Error())
+			fmt.Println(err.Error())
 		}
-		expr := semantics.Parse(*tokens)
+		expr := semantics.Parse(tokens)
 		result := expr.Evaluate()
 
 		fmt.Println(">>", result)

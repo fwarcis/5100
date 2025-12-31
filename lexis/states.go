@@ -1,65 +1,90 @@
 package lexis
 
 import (
+	"fmt"
 	"slices"
 	"unicode"
 )
 
-type parsingState interface {
-	Handle()
-	Valid() bool
+var numberSigns = []rune{'-', '+'}
+
+type parsingContext struct {
+	State *ParsingState
+	Runes []rune
+	Position int
 }
 
-type stateSignOrDigit struct {
-	lex *Lexer
+type ParsingState struct {
+	handlers []Handler
+	expectedTokTypes []TokenType
 }
 
-func (s *stateSignOrDigit) Handle() {
-	if s.lex.numSign == '-' && s.lex.char == '-' ||
-		s.lex.numSign == '+' && s.lex.char == '+' {
-		s.lex.numSign = '+'
-	} else if s.lex.numSign == '+' && s.lex.char == '-' ||
-		s.lex.numSign == '-' && s.lex.char == '+' {
-		s.lex.numSign = '-'
-	} else if unicode.IsDigit(s.lex.char) {
-		s.lex.digits += string(s.lex.char)
-	}
-
-	s.lex.state = &stateDigitOrBinOp{s.lex}
-}
-
-func (s *stateSignOrDigit) Valid() bool {
-	return slices.Contains(numberSigns, string(s.lex.char)) ||
-			unicode.IsDigit(s.lex.char)
-}
-
-type stateDigitOrBinOp struct {
-	lex *Lexer
-}
-
-func (s *stateDigitOrBinOp) Handle() {
-	if unicode.IsDigit(s.lex.char) {
-		s.lex.digits += string(s.lex.char)
-	} else if slices.Contains(binOpValues, BinOpValue(s.lex.char)) {
-		binOpVal := BinOpValue(s.lex.char)
-		if binOpVal == MinusValue {
-			binOpVal = PlusValue
-		}
-		number := *NewNumber(string(s.lex.numSign) + s.lex.digits)
-		s.lex.tokens = append(s.lex.tokens, number)
-		s.lex.tokens = append(s.lex.tokens, *binOps[binOpVal]())
-
-		s.lex.digits = ""
-		if s.lex.char == '-' {
-			s.lex.numSign = '-'
-		} else {
-			s.lex.numSign = '+'
-		}
-		s.lex.state = &stateSignOrDigit{s.lex}
+func NewValueState() *ParsingState {
+	return &ParsingState{
+		handlers: []Handler{
+			&NumberHandler{},
+		},
+		expectedTokTypes: []TokenType{NumberType,},
 	}
 }
 
-func (s *stateDigitOrBinOp) Valid() bool {
-	return slices.Contains(binOpValues, BinOpValue(s.lex.char)) ||
-			unicode.IsDigit(s.lex.char)
+func NewOperatorState() *ParsingState {
+	return &ParsingState{
+		handlers: []Handler{
+			&BinaryOperatorHandler{},
+		},
+		expectedTokTypes: []TokenType{BinOpType,},
+	}
 }
+
+func (s *ParsingState) handle(ctx *parsingContext) ([]Token, error) {
+	tokens := []Token{}
+	for _, h := range s.handlers {
+		tokens, ok := h.handle(ctx)
+		if ok {
+			return tokens, nil
+		}
+	}
+	return tokens, fmt.Errorf("lexis: at %d: %s expected", ctx.Position, s.expectedTokTypes)
+}
+
+
+type Handler interface {
+	handle(ctx *parsingContext) (tokens []Token, ok bool)
+}
+
+type NumberHandler struct {}
+
+func (*NumberHandler) handle(ctx *parsingContext) ([]Token, bool) {
+	numVal := ""
+	for i, r := range ctx.Runes[ctx.Position:] {
+		if i == 0 && !unicode.IsDigit(r) && !slices.Contains(numberSigns, r) {
+			return nil, false
+		} else if i >= 1 && !unicode.IsDigit(r) {
+			break
+		}
+		numVal += string(r)
+	}
+	ctx.Position += len(numVal)
+	if unicode.IsDigit(rune(numVal[0])) {
+		numVal = "+" + numVal
+	}
+	*ctx.State = *NewOperatorState()
+	return []Token{*NewNumber(numVal)}, true
+}
+
+type BinaryOperatorHandler struct {}
+
+func (*BinaryOperatorHandler) handle(ctx *parsingContext) ([]Token, bool) {
+	for _, variant := range binOpValues {
+		subtext := string(ctx.Runes[ctx.Position:ctx.Position+len(variant)])
+		if subtext == string(variant) {
+			*ctx.State = *NewValueState()
+			ctx.Position += len(variant)
+			return []Token{*binOps[variant]()}, true
+		}
+	}
+	return nil, false
+}
+
+

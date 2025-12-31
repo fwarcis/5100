@@ -1,55 +1,35 @@
 package lexis
 
 import (
-	"5100/lexis/lexiserrs"
+	"log"
 	"slices"
 	"unicode"
 )
 
-var numberSigns = []string{"-", "+"}
-
 type Lexer struct {
-	runes []rune
-	
-	state parsingState
-	char rune
-	numSign rune
-	digits string
-	
 	tokens []Token
+	state  *ParsingState
+	ctx parsingContext
 }
 
-func NewLexer(text string) *Lexer {
-	l := &Lexer{
-		runes: []rune(text),
-		numSign: '+',
+func NewLexer(text string, state ParsingState) *Lexer {
+	l := &Lexer{state: &state}
+	l.ctx = parsingContext{
+		State: &state,
+		Runes: []rune(text),
+		Position: 0,
 	}
-	l.state = &stateSignOrDigit{l}
 	return l
 }
 
-func (l *Lexer) Parse() (*[]Token, error) {
-	pos := 0
-	for i, r := range l.runes {
-		l.char = r
-		pos = i
-
-		if !l.state.Valid() {
-			return nil, &lexiserrs.ErrIllegalChar{Char: r, Position: i}
-		} else if unexpected(r) {
-			return nil, &lexiserrs.ErrUnexpectedChar{Char: r, Position: i}
-		} 
-
-		l.state.Handle()
+func (l *Lexer) Parse() (tokens []Token, err error) {
+	for err == nil && l.ctx.Position < len(l.ctx.Runes) {
+		toks, e := l.state.handle(&l.ctx)
+		err = e
+		tokens = append(tokens, toks...)
+		log.Println(l.ctx)
 	}
-
-	if pos+1 == len(l.runes) {
-		l.tokens = append(
-			l.tokens,
-			*NewNumber(string(l.numSign) + l.digits))
-	}
-
-	return &l.tokens, nil
+	return tokens, err
 }
 
 func unexpected(r rune) bool {

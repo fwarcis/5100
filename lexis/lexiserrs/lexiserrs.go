@@ -6,6 +6,14 @@ func sprefixf(format string, position int, a ...any) string {
 	return fmt.Sprintf("lexis:%d: "+format, position, a)
 }
 
+type ErrNumberExpected struct {
+	Position int
+}
+
+func (e *ErrNumberExpected) Error() string {
+	return sprefixf("number expected", e.Position)
+}
+
 type ErrIllegalChar struct {
 	Char     rune
 	Position int

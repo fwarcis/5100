@@ -6,7 +6,7 @@ type TokenType string
 
 const (
 	NumberType TokenType = "Number"
-	BinOpType  TokenType = "BinOpr"
+	BinOpType  TokenType = "Binary Operator"
 )
 
 type BinOpValue string
