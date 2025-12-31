@@ -57,11 +57,20 @@ type NumberHandler struct {}
 
 func (*NumberHandler) handle(ctx *parsingContext) ([]Token, bool) {
 	numVal := ""
+	alreadyWithSign := false
+	hasFirstDigit := false
 	for i, r := range ctx.Runes[ctx.Position:] {
-		if i == 0 && !unicode.IsDigit(r) && !slices.Contains(numberSigns, r) {
+		if i == 0 && !alreadyWithSign && slices.Contains(numberSigns, r) {
+			alreadyWithSign = true
+		} else if i == 0 && !unicode.IsDigit(r) && !slices.Contains(numberSigns, r) ||
+		alreadyWithSign && !hasFirstDigit && slices.Contains(numberSigns, r) {
+			ctx.Position += i
 			return nil, false
 		} else if i >= 1 && !unicode.IsDigit(r) {
 			break
+		}
+		if unicode.IsDigit(r) && !hasFirstDigit {
+			hasFirstDigit = true
 		}
 		numVal += string(r)
 	}
