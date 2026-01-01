@@ -18,10 +18,25 @@ func (t *Test[Inp, Exp]) NameOrInputRepr() string {
 	return fmt.Sprintf("%v", t.Input)
 }
 
+func wantGotRepr(want, got any) string {
+	return fmt.Sprintf("want  %v\ngot  %v", want, got)
+}
+
 func (t *Test[Inp, Exp]) WantGotError(position int, want any, got any) string {
 	return fmt.Sprintf(
 		"%v: test #%d: \nwant  %s\ngot   %s\n",
 		t.NameOrInputRepr(), position, want, got,
+	)
+}
+
+func (t *Test[Inp, Exp]) UnexpectedErrError(want, got error) string {
+	return fmt.Sprintf(
+		"%v: unexpected error: \n%s",
+		t.NameOrInputRepr(),
+		wantGotRepr(
+			fmt.Sprintf("error = '%v'", want),
+			fmt.Sprintf("error = '%v'", got),
+		),
 	)
 }
 
