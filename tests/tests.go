@@ -5,36 +5,36 @@ import (
 	"testing"
 )
 
-type Test[I any, E any] struct {
+type Test[Inp, Exp any] struct {
 	Name     string
-	Input    I
-	Expected E
+	Input    Inp
+	Expected Exp
 }
 
-func (test *Test[I, E]) NameOrInputRepr() string {
-	if test.Name != "" {
-		return test.Name
+func (t *Test[Inp, Exp]) NameOrInputRepr() string {
+	if t.Name != "" {
+		return t.Name
 	}
-	return fmt.Sprintf("%v", test.Input)
+	return fmt.Sprintf("%v", t.Input)
 }
 
-func (test *Test[I, E]) WantGotError(position int, want any, got any) string {
+func (t *Test[Inp, Exp]) WantGotError(position int, want any, got any) string {
 	return fmt.Sprintf(
 		"%v | #%d:\nwant  %s\ngot   %s\n",
-		test.Name, position, want, got,
+		t.NameOrInputRepr(), position, want, got,
 	)
 }
 
-func (test *Test[I, E]) ModuleError(text string) string {
-	return fmt.Sprintf("%v:\n%s\n", test.Input, text)
+func (t *Test[Inp, Exp]) ModuleError(text string) string {
+	return fmt.Sprintf("%v:\n%s\n", t.Input, text)
 }
 
-type Testing[Inp any, Exp any] struct {
+type Testing[Inp, Exp any] struct {
 	t     *testing.T
 	tests []Test[Inp, Exp]
 }
 
-func NewTesting[Inp any, Exp any](t *testing.T, tests []Test[Inp, Exp]) Testing[Inp, Exp] {
+func NewTesting[Inp, Exp any](t *testing.T, tests []Test[Inp, Exp]) Testing[Inp, Exp] {
 	return Testing[Inp, Exp]{t, tests}
 }
 
