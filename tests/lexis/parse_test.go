@@ -1,7 +1,6 @@
 package lexis_test
 
 import (
-	"errors"
 	"fmt"
 	"testing"
 
@@ -153,7 +152,7 @@ func TestParse(t *testing.T) {
 	ttng.Run(func(test tests.Test[string, *ExpectedTokensAndError], position int) {
 		lexer := lexis.NewLexer(test.Input, *lexis.NewValueState())
 		tokens, err := lexer.Parse()
-		if !errors.Is(err, test.Expected.Error) {
+		if err != test.Expected.Error {
 			t.Error(test.UnexpectedErrError(err, test.Expected.Error),)
 		}
 		if len(tokens) != len(test.Expected.Tokens) {
