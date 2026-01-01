@@ -34,8 +34,8 @@ func (t *Test[Inp, Exp]) UnexpectedErrError(want, got error) string {
 		"%v: unexpected error: \n%s",
 		t.NameOrInputRepr(),
 		wantGotRepr(
-			fmt.Sprintf("error = '%v'", want),
-			fmt.Sprintf("error = '%v'", got),
+			fmt.Sprintf("error = (%v %T)", want, want),
+			fmt.Sprintf("error = (%v %T)", got, got),
 		),
 	)
 }
