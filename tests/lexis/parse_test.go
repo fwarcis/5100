@@ -159,8 +159,8 @@ func TestParse(t *testing.T) {
 		if len(tokens) != len(test.Expected.Tokens) {
 			t.Error(test.WantGotError(
 				position,
-				fmt.Sprintf("len = %d", len(test.Expected.Tokens)),
-				fmt.Sprintf("len = %d", len(tokens)),
+				fmt.Sprintf("length = %d", len(test.Expected.Tokens)),
+				fmt.Sprintf("length = %d", len(tokens)),
 			))
 		}
 		for i := range tokens {
