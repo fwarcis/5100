@@ -24,8 +24,8 @@ func wantGotRepr(want, got any) string {
 
 func (t *Test[Inp, Exp]) WantGotError(position int, want any, got any) string {
 	return fmt.Sprintf(
-		"%v: test #%d: \nwant  %s\ngot   %s\n",
-		t.NameOrInputRepr(), position, want, got,
+		"%v: test #%d: \n%s",
+		t.NameOrInputRepr(), position, wantGotRepr(want, got),
 	)
 }
 
