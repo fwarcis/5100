@@ -6,6 +6,7 @@ import (
 )
 
 type Test[I any, E any] struct {
+	Name     string
 	Input    I
 	Expected E
 }
@@ -32,7 +33,11 @@ func NewTesting[Inp any, Exp any](t *testing.T, tests []Test[Inp, Exp]) Testing[
 
 func (ttng *Testing[Inp, Exp]) Run(f func(test Test[Inp, Exp], position int)) {
 	for i, test := range ttng.tests {
-		ttng.t.Run(fmt.Sprintf("%v", test.Input), func(t *testing.T) {
+		name := test.Name
+		if name == "" {
+			name = fmt.Sprintf("%v", test.Input)
+		}
+		ttng.t.Run(name, func(t *testing.T) {
 			f(test, i)
 		})
 	}
