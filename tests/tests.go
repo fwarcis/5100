@@ -20,7 +20,7 @@ func (t *Test[Inp, Exp]) NameOrInputRepr() string {
 
 func (t *Test[Inp, Exp]) WantGotError(position int, want any, got any) string {
 	return fmt.Sprintf(
-		"%v | #%d:\nwant  %s\ngot   %s\n",
+		"%v: test #%d: \nwant  %s\ngot   %s\n",
 		t.NameOrInputRepr(), position, want, got,
 	)
 }
