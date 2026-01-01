@@ -13,8 +13,8 @@ type Test[I any, E any] struct {
 
 func (test *Test[I, E]) WantGotError(position int, want any, got any) string {
 	return fmt.Sprintf(
-		"%v: at %d:\nwant  %s\ngot   %s\n",
-		test.Input, position, want, got,
+		"%v | #%d:\nwant  %s\ngot   %s\n",
+		test.Name, position, want, got,
 	)
 }
 
