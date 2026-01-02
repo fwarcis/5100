@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 
@@ -17,8 +18,8 @@ type TestOfParser = tests.Test[string, *Expected]
 func HandleTestOfParser(t *testing.T, test TestOfParser, testN int) {
 	l := lexis.NewLexer(test.Input, *lexis.NewValueState())
 	tokens, err := l.Parse()
-	if err != test.Expected.Error {
-		t.Error(test.UnexpectedErrError(testN, err, test.Expected.Error))
+	if !errors.Is(err, test.Expected.Error) {
+		t.Error(test.UnexpectedErrError(testN, test.Expected.Error, err))
 	}
 	if len(tokens) != len(test.Expected.Tokens) {
 		t.Error(test.WantGotError(

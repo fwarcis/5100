@@ -34,7 +34,7 @@ func prefix(testN int, after string) string {
 }
 
 func wantGotRepr(want, got any) string {
-	return fmt.Sprintf("want  %v\ngot   %v", want, got)
+	return fmt.Sprintf("want %v\ngot  %v", want, got)
 }
 
 type Testing[Inp, Exp any] struct {
