@@ -13,6 +13,13 @@ type UnexpectedTokenError struct {
 	Expecteds []TokenType
 }
 
+func NewErrNumberExpected(position int) *UnexpectedTokenError {
+	return &UnexpectedTokenError{
+		Position:  position,
+		Expecteds: []TokenType{NumberType},
+	}
+}
+
 func (e *UnexpectedTokenError) Error() string {
 	return sprefixf("%s expected", e.Position, e.Expecteds)
 }

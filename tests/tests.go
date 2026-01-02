@@ -18,45 +18,38 @@ func (t *Test[Inp, Exp]) NameOrInputRepr() string {
 	return fmt.Sprintf("%v", t.Input)
 }
 
+func (t *Test[Inp, Exp]) WantGotError(testN int, want any, got any) string {
+	return prefix(testN, wantGotRepr(want, got))
+}
+
+func (t *Test[Inp, Exp]) UnexpectedErrError(testN int, want, got error) string {
+	return prefix(testN, wantGotRepr(
+		fmt.Sprintf("error = (%v %T)", want, want),
+		fmt.Sprintf("error = (%v %T)", got, got),
+	))
+}
+
+func prefix(testN int, after string) string {
+	return fmt.Sprintf("test #%d:\n%s", testN, after)
+}
+
 func wantGotRepr(want, got any) string {
-	return fmt.Sprintf("want  %v\ngot  %v", want, got)
-}
-
-func (t *Test[Inp, Exp]) WantGotError(position int, want any, got any) string {
-	return fmt.Sprintf(
-		"%v: test #%d: \n%s",
-		t.NameOrInputRepr(), position, wantGotRepr(want, got),
-	)
-}
-
-func (t *Test[Inp, Exp]) UnexpectedErrError(want, got error) string {
-	return fmt.Sprintf(
-		"%v: unexpected error: \n%s",
-		t.NameOrInputRepr(),
-		wantGotRepr(
-			fmt.Sprintf("error = (%v %T)", want, want),
-			fmt.Sprintf("error = (%v %T)", got, got),
-		),
-	)
-}
-
-func (t *Test[Inp, Exp]) ModuleError(text string) string {
-	return fmt.Sprintf("%v:\n%s\n", t.Input, text)
+	return fmt.Sprintf("want  %v\ngot   %v", want, got)
 }
 
 type Testing[Inp, Exp any] struct {
-	t     *testing.T
-	tests []Test[Inp, Exp]
+	T     *testing.T
+	Tests []Test[Inp, Exp]
 }
 
 func NewTesting[Inp, Exp any](t *testing.T, tests []Test[Inp, Exp]) Testing[Inp, Exp] {
 	return Testing[Inp, Exp]{t, tests}
 }
 
-func (ttng *Testing[Inp, Exp]) Run(f func(test Test[Inp, Exp], position int)) {
-	for i, test := range ttng.tests {
-		ttng.t.Run(test.NameOrInputRepr(), func(t *testing.T) {
-			f(test, i)
+func (ttng *Testing[Inp, Exp]) Run(handleTest func(t *testing.T, test Test[Inp, Exp], testN int)) {
+	for i, test := range ttng.Tests {
+		ttng.T.Run(test.NameOrInputRepr(), func(t *testing.T) {
+			handleTest(t, test, i)
 		})
 	}
 }
