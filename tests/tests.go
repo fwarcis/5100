@@ -24,8 +24,8 @@ func (t *Test[Inp, Exp]) WantGotError(testN int, want any, got any) string {
 
 func (t *Test[Inp, Exp]) UnexpectedErrError(testN int, want, got error) string {
 	return prefix(testN, wantGotRepr(
-		fmt.Sprintf("error = (%v %T)", want, want),
-		fmt.Sprintf("error = (%v %T)", got, got),
+		fmt.Sprintf("error = {\n\tValue: %v\n\tType:  %T\n}", want, want),
+		fmt.Sprintf("error = {\n\tValue: %v\n\tType:  %T\n}", got, got),
 	))
 }
 
