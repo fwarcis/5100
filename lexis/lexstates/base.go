@@ -6,7 +6,7 @@ import (
 )
 
 type State struct {
-	Handlers         []Handler
+	Handlers  []Handler
 	Expecteds []lextypes.TokenType
 }
 
