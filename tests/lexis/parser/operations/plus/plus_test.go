@@ -92,7 +92,74 @@ func Test__NoSign(t *testing.T) {
 	ttng.Run(parser.HandleTestOfParser)
 }
 
-func Test__Positive_Signeds(t *testing.T) {
+func Test__Single_NoSign_Erroring(t *testing.T) {
+	ttng := tests.NewTesting(t, []parser.TestOfParser{
+		{
+			Input: "0+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("0"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(2),
+			},
+		},
+		{
+			Input: "1+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("1"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(2),
+			},
+		},
+		{
+			Input: "01+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("01"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(3),
+			},
+		},
+		{
+			Input: "000+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("000"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(4),
+			},
+		},
+		{
+			Input: "0001+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("0001"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(5),
+			},
+		},
+		{
+			Input: "000123+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("000123"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(7),
+			},
+		},
+	})
+
+	ttng.Run(parser.HandleTestOfParser)
+}
+
+func Test__Plus_Signeds(t *testing.T) {
 	ttng := tests.NewTesting(t, []parser.TestOfParser{
 		{
 			Input: "+0+0",
@@ -187,7 +254,74 @@ func Test__Positive_Signeds(t *testing.T) {
 	ttng.Run(parser.HandleTestOfParser)
 }
 
-func Test__Negative_Signeds(t *testing.T) {
+func Test__Single_Plus_Signed_Erroring(t *testing.T) {
+	ttng := tests.NewTesting(t, []parser.TestOfParser{
+		{
+			Input: "+0+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("+0"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(3),
+			},
+		},
+		{
+			Input: "+1+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("+1"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(3),
+			},
+		},
+		{
+			Input: "+01+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("+01"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(4),
+			},
+		},
+		{
+			Input: "+000+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("+000"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(5),
+			},
+		},
+		{
+			Input: "+0001+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("+0001"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(6),
+			},
+		},
+		{
+			Input: "+000123+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("+000123"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(8),
+			},
+		},
+	})
+
+	ttng.Run(parser.HandleTestOfParser)
+}
+
+func Test__Minus_Signeds(t *testing.T) {
 	ttng := tests.NewTesting(t, []parser.TestOfParser{
 		{
 			Input: "-0+-0",
@@ -275,6 +409,73 @@ func Test__Negative_Signeds(t *testing.T) {
 					*lexis.NewNumber("-4"),
 				},
 				Error: nil,
+			},
+		},
+	})
+
+	ttng.Run(parser.HandleTestOfParser)
+}
+
+func Test__Single_Minus_Signed_Erroring(t *testing.T) {
+	ttng := tests.NewTesting(t, []parser.TestOfParser{
+		{
+			Input: "-0+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("-0"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(3),
+			},
+		},
+		{
+			Input: "-1+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("-1"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(3),
+			},
+		},
+		{
+			Input: "-01+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("-01"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(4),
+			},
+		},
+		{
+			Input: "-000+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("-000"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(5),
+			},
+		},
+		{
+			Input: "-0001+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("-0001"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(6),
+			},
+		},
+		{
+			Input: "-000123+",
+			Expected: &parser.Expected{
+				Tokens: []lexis.Token{
+					*lexis.NewNumber("-000123"),
+					*lexis.NewPlus(),
+				},
+				Error: lexis.NewErrNumberExpected(8),
 			},
 		},
 	})
