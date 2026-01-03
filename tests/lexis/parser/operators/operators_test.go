@@ -8,7 +8,7 @@ import (
 	"5100/tests/lexis/parser"
 )
 
-func run(t *testing.T, opVal string) {
+func run(t *testing.T, opVal string, posOfUnexpect int) {
 	inputs := []string{
 		opVal,
 		opVal + opVal,
@@ -20,7 +20,7 @@ func run(t *testing.T, opVal string) {
 		cases = append(cases, parser.TestOfParser{
 			Input: inp,
 			Expected: &parser.Expected{
-				Error: lexis.NewErrNumberExpected(0),
+				Error: lexis.NewErrNumberExpected(posOfUnexpect),
 			},
 		})
 	}
@@ -30,19 +30,19 @@ func run(t *testing.T, opVal string) {
 }
 
 func Test__Plus(t *testing.T) {
-	run(t, "+")
+	run(t, "+", 1)
 }
 
 func Test__Minus(t *testing.T) {
-	run(t, "-")
+	run(t, "-", 1)
 }
 
 func Test__Multiplication(t *testing.T) {
-	run(t, "*")
+	run(t, "*", 0)
 }
 
 func Test__Division(t *testing.T) {
-	run(t, "/")
+	run(t, "/", 0)
 }
 
 func Test__Jointly(t *testing.T) {
