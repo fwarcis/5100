@@ -3,7 +3,7 @@ package parser_test
 import (
 	"testing"
 
-	"5100/lexis"
+	"5100/lexis/lextypes"
 	"5100/semantics"
 	"5100/tests"
 )
@@ -13,7 +13,7 @@ type Expected struct {
 	Error      error
 }
 
-type TestOfParser = tests.Test[[]lexis.Token, Expected]
+type TestOfParser = tests.Test[[]lextypes.Token, Expected]
 
 func HandleTestOfParser(t *testing.T, test TestOfParser, testN int) {
 	expr := semantics.Parse(test.Input)

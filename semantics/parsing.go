@@ -3,10 +3,10 @@ package semantics
 import (
 	"strconv"
 
-	"5100/lexis"
+	"5100/lexis/lextypes"
 )
 
-func Parse(tokens []lexis.Token) Expression {
+func Parse(tokens []lextypes.Token) Expression {
 	relativePosition := 0
 	firstMinPriorityToken := tokens[0]
 	for pos, tok := range tokens {
@@ -16,13 +16,13 @@ func Parse(tokens []lexis.Token) Expression {
 		}
 	}
 
-	if firstMinPriorityToken.Type == lexis.NumberType {
+	if firstMinPriorityToken.Type == lextypes.NumberType {
 		value, _ := strconv.ParseFloat(firstMinPriorityToken.Value, 64)
 		return &Number{value: value}
 	}
 	return &BinaryOperator{
 		left:    Parse(tokens[:relativePosition]),
 		right:   Parse(tokens[relativePosition+1:]),
-		operate: BinOpFuncs[lexis.BinOpValue(firstMinPriorityToken.Value)],
+		operate: BinOpFuncs[lextypes.BinOpValue(firstMinPriorityToken.Value)],
 	}
 }

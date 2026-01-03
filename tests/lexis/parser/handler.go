@@ -6,17 +6,19 @@ import (
 	"testing"
 
 	"5100/lexis"
+	"5100/lexis/lexstates"
+	"5100/lexis/lextypes"
 	"5100/tests"
 )
 
 type Expected struct {
-	Tokens []lexis.Token
+	Tokens []lextypes.Token
 	Error  error
 }
 type TestOfParser = tests.Test[string, *Expected]
 
 func HandleTestOfParser(t *testing.T, test TestOfParser, testN int) {
-	l := lexis.NewLexer(test.Input, *lexis.NewValueState())
+	l := lexis.NewLexer(test.Input, *lexstates.NewValueState())
 	tokens, err := l.Parse()
 	if !errors.Is(err, test.Expected.Error) {
 		t.Error(test.UnexpectedErrError(testN, test.Expected.Error, err))

@@ -3,7 +3,7 @@ package operators_test
 import (
 	"testing"
 
-	"5100/lexis"
+	"5100/lexis/lexerrors"
 	"5100/tests"
 	"5100/tests/lexis/parser"
 )
@@ -20,7 +20,7 @@ func run(t *testing.T, opVal string, posOfUnexpect int) {
 		cases = append(cases, parser.TestOfParser{
 			Input: inp,
 			Expected: &parser.Expected{
-				Error: lexis.NewErrNumberExpected(posOfUnexpect),
+				Error: lexerrors.NewErrNumberExpected(posOfUnexpect),
 			},
 		})
 	}
@@ -69,7 +69,7 @@ func Test__Jointly(t *testing.T) {
 		cases = append(cases, parser.TestOfParser{
 			Input: inp,
 			Expected: &parser.Expected{
-				Error: lexis.NewErrNumberExpected(charPosForErr),
+				Error: lexerrors.NewErrNumberExpected(charPosForErr),
 			},
 		})
 	}

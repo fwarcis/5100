@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"5100/lexis"
+	"5100/lexis/lexstates"
 	"5100/semantics"
 )
 
@@ -19,7 +20,7 @@ func main() {
 			continue
 		}
 
-		lexer := lexis.NewLexer(input, *lexis.NewValueState())
+		lexer := lexis.NewLexer(input, *lexstates.NewValueState())
 
 		tokens, err := lexer.Parse()
 		if err != nil {

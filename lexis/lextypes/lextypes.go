@@ -1,4 +1,4 @@
-package lexis
+package lextypes
 
 import "fmt"
 
@@ -18,16 +18,16 @@ const (
 	DivValue   BinOpValue = "/"
 )
 
-var binOps = map[BinOpValue](func() *Token){
+var BinOps = map[BinOpValue](func() *Token){
 	PlusValue:  NewPlus,
 	MinusValue: NewMinus,
 	MulValue:   NewMultiplication,
 	DivValue:   NewDivision,
 }
 
-var binOpValues []BinOpValue = *func() *[]BinOpValue {
+var BinOpValues []BinOpValue = *func() *[]BinOpValue {
 	res := []BinOpValue{}
-	for op := range binOps {
+	for op := range BinOps {
 		res = append(res, op)
 	}
 	return &res

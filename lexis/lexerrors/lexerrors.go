@@ -1,8 +1,10 @@
-package lexis
+package lexerrors
 
 import (
 	"fmt"
 	"slices"
+
+	"5100/lexis/lextypes"
 )
 
 func sprefixf(format string, position int, a ...any) string {
@@ -11,13 +13,13 @@ func sprefixf(format string, position int, a ...any) string {
 
 type UnexpectedTokenError struct {
 	Position  int
-	Expecteds []TokenType
+	Expecteds []lextypes.TokenType
 }
 
 func NewErrNumberExpected(position int) *UnexpectedTokenError {
 	return &UnexpectedTokenError{
 		Position:  position,
-		Expecteds: []TokenType{NumberType},
+		Expecteds: []lextypes.TokenType{lextypes.NumberType},
 	}
 }
 

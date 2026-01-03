@@ -1,15 +1,16 @@
 package semantics
 
 import (
-	"5100/lexis"
 	"log/slog"
+
+	"5100/lexis/lextypes"
 )
 
-var BinOpFuncs = map[lexis.BinOpValue]BinaryOperatorFunc{
-	lexis.PlusValue: sum,
-	lexis.MinusValue: sub,
-	lexis.MulValue: mul,
-	lexis.DivValue: div,
+var BinOpFuncs = map[lextypes.BinOpValue]BinaryOperatorFunc{
+	lextypes.PlusValue:  sum,
+	lextypes.MinusValue: sub,
+	lextypes.MulValue:   mul,
+	lextypes.DivValue:   div,
 }
 
 func sum(a, b float64) float64 { return a + b }
@@ -62,4 +63,3 @@ func (binOp *BinaryOperator) Evaluate() float64 {
 	slog.Debug("%d", slog.Float64("evaluate: ", value))
 	return value
 }
-

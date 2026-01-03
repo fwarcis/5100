@@ -3,7 +3,8 @@ package plus_test
 import (
 	"testing"
 
-	"5100/lexis"
+	"5100/lexis/lexerrors"
+	"5100/lexis/lextypes"
 	"5100/tests"
 	"5100/tests/lexis/parser"
 )
@@ -13,10 +14,10 @@ func Test__NoSign(t *testing.T) {
 		{
 			Input: "0-0",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("0"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("0"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("0"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("0"),
 				},
 				Error: nil,
 			},
@@ -24,10 +25,10 @@ func Test__NoSign(t *testing.T) {
 		{
 			Input: "0-1",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("0"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("1"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("0"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("1"),
 				},
 				Error: nil,
 			},
@@ -35,10 +36,10 @@ func Test__NoSign(t *testing.T) {
 		{
 			Input: "1-0",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("1"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("0"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("1"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("0"),
 				},
 				Error: nil,
 			},
@@ -46,10 +47,10 @@ func Test__NoSign(t *testing.T) {
 		{
 			Input: "01-1",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("01"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("1"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("01"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("1"),
 				},
 				Error: nil,
 			},
@@ -57,10 +58,10 @@ func Test__NoSign(t *testing.T) {
 		{
 			Input: "1-01",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("1"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("01"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("1"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("01"),
 				},
 				Error: nil,
 			},
@@ -68,10 +69,10 @@ func Test__NoSign(t *testing.T) {
 		{
 			Input: "000-000",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("000"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("000"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("000"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("000"),
 				},
 				Error: nil,
 			},
@@ -79,10 +80,10 @@ func Test__NoSign(t *testing.T) {
 		{
 			Input: "0001-002",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("0001"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("002"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("0001"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("002"),
 				},
 				Error: nil,
 			},
@@ -97,61 +98,61 @@ func Test__Single_NoSign_Erroring(t *testing.T) {
 		{
 			Input: "0-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("0"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("0"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(2),
+				Error: lexerrors.NewErrNumberExpected(2),
 			},
 		},
 		{
 			Input: "1-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("1"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("1"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(2),
+				Error: lexerrors.NewErrNumberExpected(2),
 			},
 		},
 		{
 			Input: "01-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("01"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("01"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(3),
+				Error: lexerrors.NewErrNumberExpected(3),
 			},
 		},
 		{
 			Input: "000-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("000"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("000"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(4),
+				Error: lexerrors.NewErrNumberExpected(4),
 			},
 		},
 		{
 			Input: "0001-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("0001"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("0001"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(5),
+				Error: lexerrors.NewErrNumberExpected(5),
 			},
 		},
 		{
 			Input: "000123-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("000123"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("000123"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(7),
+				Error: lexerrors.NewErrNumberExpected(7),
 			},
 		},
 	})
@@ -164,10 +165,10 @@ func Test__Plus_Signeds(t *testing.T) {
 		{
 			Input: "+0-0",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+0"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("0"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+0"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("0"),
 				},
 				Error: nil,
 			},
@@ -175,10 +176,10 @@ func Test__Plus_Signeds(t *testing.T) {
 		{
 			Input: "+1-0",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+1"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("0"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+1"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("0"),
 				},
 				Error: nil,
 			},
@@ -186,10 +187,10 @@ func Test__Plus_Signeds(t *testing.T) {
 		{
 			Input: "+0-1",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+0"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("1"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+0"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("1"),
 				},
 				Error: nil,
 			},
@@ -197,10 +198,10 @@ func Test__Plus_Signeds(t *testing.T) {
 		{
 			Input: "+01-1",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+01"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("1"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+01"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("1"),
 				},
 				Error: nil,
 			},
@@ -208,10 +209,10 @@ func Test__Plus_Signeds(t *testing.T) {
 		{
 			Input: "+1-01",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+1"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("01"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+1"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("01"),
 				},
 				Error: nil,
 			},
@@ -219,10 +220,10 @@ func Test__Plus_Signeds(t *testing.T) {
 		{
 			Input: "+000-000",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+000"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("000"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+000"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("000"),
 				},
 				Error: nil,
 			},
@@ -230,10 +231,10 @@ func Test__Plus_Signeds(t *testing.T) {
 		{
 			Input: "+9-0000",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+9"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("0000"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+9"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("0000"),
 				},
 				Error: nil,
 			},
@@ -241,10 +242,10 @@ func Test__Plus_Signeds(t *testing.T) {
 		{
 			Input: "+000123-4",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+000123"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("4"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+000123"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("4"),
 				},
 				Error: nil,
 			},
@@ -259,61 +260,61 @@ func Test__Single_Plus_Signeds_Erroring(t *testing.T) {
 		{
 			Input: "+0-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+0"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+0"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(3),
+				Error: lexerrors.NewErrNumberExpected(3),
 			},
 		},
 		{
 			Input: "+1-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+1"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+1"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(3),
+				Error: lexerrors.NewErrNumberExpected(3),
 			},
 		},
 		{
 			Input: "+01-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+01"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+01"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(4),
+				Error: lexerrors.NewErrNumberExpected(4),
 			},
 		},
 		{
 			Input: "+000-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+000"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+000"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(5),
+				Error: lexerrors.NewErrNumberExpected(5),
 			},
 		},
 		{
 			Input: "+0001-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+0001"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+0001"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(6),
+				Error: lexerrors.NewErrNumberExpected(6),
 			},
 		},
 		{
 			Input: "+000123-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+000123"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+000123"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(8),
+				Error: lexerrors.NewErrNumberExpected(8),
 			},
 		},
 	})
@@ -326,10 +327,10 @@ func Test__Minus_Signeds(t *testing.T) {
 		{
 			Input: "-0--0",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-0"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("-0"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-0"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("-0"),
 				},
 				Error: nil,
 			},
@@ -337,10 +338,10 @@ func Test__Minus_Signeds(t *testing.T) {
 		{
 			Input: "-1--0",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-1"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("-0"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-1"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("-0"),
 				},
 				Error: nil,
 			},
@@ -348,10 +349,10 @@ func Test__Minus_Signeds(t *testing.T) {
 		{
 			Input: "-0--1",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-0"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("-1"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-0"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("-1"),
 				},
 				Error: nil,
 			},
@@ -359,10 +360,10 @@ func Test__Minus_Signeds(t *testing.T) {
 		{
 			Input: "-01--1",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-01"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("-1"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-01"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("-1"),
 				},
 				Error: nil,
 			},
@@ -370,10 +371,10 @@ func Test__Minus_Signeds(t *testing.T) {
 		{
 			Input: "-1--01",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-1"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("-01"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-1"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("-01"),
 				},
 				Error: nil,
 			},
@@ -381,10 +382,10 @@ func Test__Minus_Signeds(t *testing.T) {
 		{
 			Input: "-000--000",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-000"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("-000"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-000"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("-000"),
 				},
 				Error: nil,
 			},
@@ -392,10 +393,10 @@ func Test__Minus_Signeds(t *testing.T) {
 		{
 			Input: "-9--0000",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-9"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("-0000"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-9"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("-0000"),
 				},
 				Error: nil,
 			},
@@ -403,10 +404,10 @@ func Test__Minus_Signeds(t *testing.T) {
 		{
 			Input: "-000123--4",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-000123"),
-					*lexis.NewMinus(),
-					*lexis.NewNumber("-4"),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-000123"),
+					*lextypes.NewMinus(),
+					*lextypes.NewNumber("-4"),
 				},
 				Error: nil,
 			},
@@ -421,61 +422,61 @@ func Test__Single_Minus_Signed_Erroring(t *testing.T) {
 		{
 			Input: "-0-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-0"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-0"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(3),
+				Error: lexerrors.NewErrNumberExpected(3),
 			},
 		},
 		{
 			Input: "-1-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-1"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-1"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(3),
+				Error: lexerrors.NewErrNumberExpected(3),
 			},
 		},
 		{
 			Input: "-01-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-01"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-01"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(4),
+				Error: lexerrors.NewErrNumberExpected(4),
 			},
 		},
 		{
 			Input: "-000-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-000"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-000"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(5),
+				Error: lexerrors.NewErrNumberExpected(5),
 			},
 		},
 		{
 			Input: "-0001-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-0001"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-0001"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(6),
+				Error: lexerrors.NewErrNumberExpected(6),
 			},
 		},
 		{
 			Input: "-000123-",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-000123"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-000123"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(8),
+				Error: lexerrors.NewErrNumberExpected(8),
 			},
 		},
 	})
@@ -488,81 +489,81 @@ func Test__MultiSigneds_Erroring(t *testing.T) {
 		{
 			Input: "0---0",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("0"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("0"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(3),
+				Error: lexerrors.NewErrNumberExpected(3),
 			},
 		},
 		{
 			Input: "-0---0",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-0"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-0"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(4),
+				Error: lexerrors.NewErrNumberExpected(4),
 			},
 		},
 		{
 			Input: "0-----0",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("0"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("0"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(3),
+				Error: lexerrors.NewErrNumberExpected(3),
 			},
 		},
 		{
 			Input: "+1---1",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+1"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+1"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(4),
+				Error: lexerrors.NewErrNumberExpected(4),
 			},
 		},
 		{
 			Input: "-1----+2",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-1"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-1"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(4),
+				Error: lexerrors.NewErrNumberExpected(4),
 			},
 		},
 		{
 			Input: "-12--+34",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-12"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-12"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(5),
+				Error: lexerrors.NewErrNumberExpected(5),
 			},
 		},
 		{
 			Input: "+56-----78",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("+56"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("+56"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(5),
+				Error: lexerrors.NewErrNumberExpected(5),
 			},
 		},
 		{
 			Input: "-123---456",
 			Expected: &parser.Expected{
-				Tokens: []lexis.Token{
-					*lexis.NewNumber("-123"),
-					*lexis.NewMinus(),
+				Tokens: []lextypes.Token{
+					*lextypes.NewNumber("-123"),
+					*lextypes.NewMinus(),
 				},
-				Error: lexis.NewErrNumberExpected(6),
+				Error: lexerrors.NewErrNumberExpected(6),
 			},
 		},
 	})

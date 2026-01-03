@@ -1,14 +1,19 @@
 package lexis
 
+import (
+	"5100/lexis/lexstates"
+	"5100/lexis/lextypes"
+)
+
 type Lexer struct {
-	tokens []Token
-	state  *ParsingState
-	ctx    parsingContext
+	tokens []lextypes.Token
+	state  *lexstates.State
+	ctx    lexstates.ParserContext
 }
 
-func NewLexer(text string, state ParsingState) *Lexer {
+func NewLexer(text string, state lexstates.State) *Lexer {
 	l := &Lexer{state: &state}
-	l.ctx = parsingContext{
+	l.ctx = lexstates.ParserContext{
 		State:    &state,
 		Runes:    []rune(text),
 		Position: 0,
@@ -16,9 +21,9 @@ func NewLexer(text string, state ParsingState) *Lexer {
 	return l
 }
 
-func (l *Lexer) Parse() (tokens []Token, err error) {
+func (l *Lexer) Parse() (tokens []lextypes.Token, err error) {
 	for err == nil && l.ctx.HasNext() {
-		toks, e := l.state.handle(&l.ctx)
+		toks, e := l.state.Parse(&l.ctx)
 		err = e
 		tokens = append(tokens, toks...)
 	}
