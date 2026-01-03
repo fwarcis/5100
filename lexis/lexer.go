@@ -1,7 +1,5 @@
 package lexis
 
-import "fmt"
-
 type Lexer struct {
 	tokens []Token
 	state  *ParsingState
@@ -21,7 +19,6 @@ func NewLexer(text string, state ParsingState) *Lexer {
 func (l *Lexer) Parse() (tokens []Token, err error) {
 	for err == nil && l.ctx.HasNext() {
 		toks, e := l.state.handle(&l.ctx)
-		fmt.Println(toks) // !!!!!!!!!!!
 		err = e
 		tokens = append(tokens, toks...)
 	}
