@@ -1,14 +1,5 @@
 package lextypes
 
-import "fmt"
-
-type TokenType string
-
-const (
-	NumberType TokenType = "Number"
-	BinOpType  TokenType = "Binary Operator"
-)
-
 type BinOpValue string
 
 const (
@@ -32,29 +23,6 @@ var BinOpValues []BinOpValue = *func() *[]BinOpValue {
 	}
 	return &res
 }()
-
-type Token struct {
-	Value    string
-	Type     TokenType
-	Priority int
-}
-
-func (tok Token) String() string {
-	return fmt.Sprintf(
-		"Token{Type=%s, Value=%q, Priority=%d}",
-		tok.Type,
-		tok.Value,
-		tok.Priority,
-	)
-}
-
-func NewNumber(value string) *Token {
-	return &Token{
-		Value:    value,
-		Priority: 100,
-		Type:     NumberType,
-	}
-}
 
 func NewPlus() *Token {
 	return &Token{
