@@ -8,13 +8,25 @@ import (
 var numberSigns = []rune{'-', '+'}
 
 type parsingContext struct {
-	State *ParsingState
-	Runes []rune
+	State    *ParsingState
+	Runes    []rune
 	Position int
 }
 
+func (ctx *parsingContext) Rune() rune {
+	return ctx.Runes[ctx.Position]
+}
+
+func (ctx *parsingContext) CurrentRunes() []rune {
+	return ctx.Runes[ctx.Position:]
+}
+
+func (ctx *parsingContext) HasNext() bool {
+	return ctx.Position < len(ctx.Runes)
+}
+
 type ParsingState struct {
-	handlers []Handler
+	handlers         []Handler
 	expectedTokTypes []TokenType
 }
 
@@ -23,7 +35,7 @@ func NewValueState() *ParsingState {
 		handlers: []Handler{
 			&NumberHandler{},
 		},
-		expectedTokTypes: []TokenType{NumberType,},
+		expectedTokTypes: []TokenType{NumberType},
 	}
 }
 
@@ -32,70 +44,73 @@ func NewOperatorState() *ParsingState {
 		handlers: []Handler{
 			&BinaryOperatorHandler{},
 		},
-		expectedTokTypes: []TokenType{BinOpType,},
+		expectedTokTypes: []TokenType{BinOpType},
 	}
 }
 
 func (s *ParsingState) handle(ctx *parsingContext) ([]Token, error) {
 	tokens := []Token{}
-	for _, h := range s.handlers {
-		tokens, ok := h.handle(ctx)
+	nextTokPos := ctx.Position
+	for i, h := range s.handlers {
+		toks, ok := h.handle(ctx)
+		tokens = toks
 		if ok {
 			return tokens, nil
+		} else if i+1 == len(s.handlers) {
+			break
 		}
+		ctx.Position = nextTokPos
 	}
 	return tokens, &UnexpectedTokenError{
-		Position: ctx.Position,
+		Position:  ctx.Position,
 		Expecteds: ctx.State.expectedTokTypes,
 	}
 }
-
 
 type Handler interface {
 	handle(ctx *parsingContext) (tokens []Token, ok bool)
 }
 
-type NumberHandler struct {}
+type NumberHandler struct{}
 
 func (*NumberHandler) handle(ctx *parsingContext) ([]Token, bool) {
 	numVal := ""
-	alreadyWithSign := false
-	hasFirstDigit := false
-	for i, r := range ctx.Runes[ctx.Position:] {
-		if i == 0 && !alreadyWithSign && slices.Contains(numberSigns, r) {
-			alreadyWithSign = true
-		} else if i == 0 && !unicode.IsDigit(r) && !slices.Contains(numberSigns, r) ||
-		alreadyWithSign && !hasFirstDigit && slices.Contains(numberSigns, r) {
-			ctx.Position += i
-			return nil, false
-		} else if i >= 1 && !unicode.IsDigit(r) {
+
+	hasPlusSign := slices.Contains(numberSigns, ctx.Rune())
+
+	if hasPlusSign {
+		numVal += string(ctx.Rune())
+		ctx.Position++
+	}
+	for _, r := range ctx.CurrentRunes() {
+		if !unicode.IsDigit(r) {
 			break
 		}
-		if unicode.IsDigit(r) && !hasFirstDigit {
-			hasFirstDigit = true
-		}
 		numVal += string(r)
+		ctx.Position++
 	}
-	ctx.Position += len(numVal)
-	if unicode.IsDigit(rune(numVal[0])) {
-		numVal = "+" + numVal
+
+	if numVal == "" || len(numVal) == 1 && hasPlusSign {
+		return nil, false
 	}
 	*ctx.State = *NewOperatorState()
 	return []Token{*NewNumber(numVal)}, true
 }
 
-type BinaryOperatorHandler struct {}
+type BinaryOperatorHandler struct{}
 
 func (*BinaryOperatorHandler) handle(ctx *parsingContext) ([]Token, bool) {
 	for _, variant := range binOpValues {
-		subtext := string(ctx.Runes[ctx.Position:ctx.Position+len(variant)])
+		subtext := string(ctx.Runes[ctx.Position : ctx.Position+len(variant)])
 		if subtext == string(variant) {
 			*ctx.State = *NewValueState()
 			ctx.Position += len(variant)
-			return []Token{*binOps[variant]()}, true
+			tokens := []Token{*binOps[variant]()}
+			if !ctx.HasNext() {
+				return tokens, false
+			}
+			return tokens, true
 		}
 	}
 	return nil, false
 }
-
-

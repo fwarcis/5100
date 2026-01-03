@@ -2,6 +2,7 @@ package lexis
 
 import (
 	"fmt"
+	"slices"
 )
 
 func sprefixf(format string, position int, a ...any) string {
@@ -22,4 +23,13 @@ func NewErrNumberExpected(position int) *UnexpectedTokenError {
 
 func (e *UnexpectedTokenError) Error() string {
 	return sprefixf("%s expected", e.Position, e.Expecteds)
+}
+
+func (e *UnexpectedTokenError) Is(target error) bool {
+	switch targ := target.(type) {
+	case *UnexpectedTokenError:
+		return e.Position == targ.Position &&
+			slices.Compare(e.Expecteds, targ.Expecteds) == 0
+	}
+	return false
 }
