@@ -12,14 +12,12 @@ const (
 type Token struct {
 	Value    string
 	Type     TokenType
-	Priority int
 }
 
 func (tok Token) String() string {
 	return fmt.Sprintf(
-		"Token{Type=%s, Value=%q, Priority=%d}",
+		"Token{Type=%s, Value=%q}",
 		tok.Type,
 		tok.Value,
-		tok.Priority,
 	)
 }
