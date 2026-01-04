@@ -1,4 +1,4 @@
-package semantics
+package syntax
 
 import (
 	"log/slog"
@@ -20,6 +20,29 @@ func div(a, b float64) float64 { return a / b }
 
 type Expression interface {
 	Evaluate() float64
+}
+
+type Node interface {
+	Get() lextypes.Token
+}
+
+type Value struct {
+	value lextypes.Token
+}
+
+func (v *Value) Get() lextypes.Token {
+	return v.value
+}
+
+type Unary struct {
+	Value
+	Next Node
+}
+
+type Binary struct {
+	Value
+	Left Node
+	Right Node
 }
 
 type Number struct {

@@ -5,43 +5,35 @@ import (
 	"strconv"
 
 	"5100/lexis/lextypes"
+	"5100/syntax"
 )
 
-func Parse(tokens []lextypes.Token) Expression {
-	relativePosition := 0
-	minPriorityTok := tokens[0]
-	for pos, tok := range tokens {
-		if priority(tok) < priority(minPriorityTok) {
-			minPriorityTok = tok
-			relativePosition = pos
+func Evaluate(expr syntax.Node) (float64, error) {
+	if expr == nil {
+		return 0, fmt.Errorf("")
+	}
+
+	tok := expr.Get()
+	switch node := expr.(type) {
+	case *syntax.Unary:
+		if tok.Type == lextypes.NumberType {
+			val, err := strconv.ParseFloat(tok.Value, 64)
+			return val, err
 		}
+	case *syntax.Binary:
+		operate := syntax.BinOpFuncs[lextypes.BinOpValue(tok.Value)]
+		if node.Left == nil || node.Right == nil {
+			return 0, fmt.Errorf("")
+		}
+		leftVal, err := Evaluate(node.Left)
+		if err != nil {
+			return 0, err
+		}
+		rightVal, err := Evaluate(node.Right)
+		if err != nil {
+			return 0, err
+		}
+		return operate(leftVal, rightVal), nil
 	}
-
-	if minPriorityTok.Type == lextypes.NumberType {
-		value, _ := strconv.ParseFloat(minPriorityTok.Value, 64)
-		return &Number{value: value}
-	}
-	return &BinaryOperator{
-		left:    Parse(tokens[:relativePosition]),
-		right:   Parse(tokens[relativePosition+1:]),
-		operate: BinOpFuncs[lextypes.BinOpValue(minPriorityTok.Value)],
-	}
+	return 0, fmt.Errorf("")
 }
-
-func priority(tok lextypes.Token) int {
-	switch tok.Type {
-	case lextypes.NumberType:
-		return 100000
-	case lextypes.BinOpType:
-		return BinOpPriorities[lextypes.BinOpValue(tok.Value)]
-	}
-	panic(fmt.Sprintf("unexpected token type '%s'", tok.Type))
-}
-
-var BinOpPriorities = map[lextypes.BinOpValue]int{
-	lextypes.PlusValue: 100,
-	lextypes.MinusValue: 100,
-	lextypes.MulValue: 200,
-	lextypes.DivValue: 200,
-}
-

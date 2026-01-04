@@ -6,6 +6,7 @@ import (
 	"5100/lexis"
 	"5100/lexis/lexstates"
 	"5100/semantics"
+	"5100/syntax"
 )
 
 func main() {
@@ -27,8 +28,11 @@ func main() {
 			fmt.Println(err.Error())
 			continue
 		}
-		expr := semantics.Parse(tokens)
-		result := expr.Evaluate()
+		expr := syntax.Parse(tokens)
+		result, err := semantics.Evaluate(expr)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 
 		fmt.Println(">>", result)
 	}
