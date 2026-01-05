@@ -102,7 +102,7 @@ func Test__Single_NoSign_Erroring(t *testing.T) {
 					*lextypes.NewNumber("0"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(2),
+				Error: lexerrors.NewNumberExpectedError(2, -1),
 			},
 		},
 		{
@@ -112,7 +112,7 @@ func Test__Single_NoSign_Erroring(t *testing.T) {
 					*lextypes.NewNumber("1"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(2),
+				Error: lexerrors.NewNumberExpectedError(2, -1),
 			},
 		},
 		{
@@ -122,7 +122,7 @@ func Test__Single_NoSign_Erroring(t *testing.T) {
 					*lextypes.NewNumber("01"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(3),
+				Error: lexerrors.NewNumberExpectedError(3, -1),
 			},
 		},
 		{
@@ -132,7 +132,7 @@ func Test__Single_NoSign_Erroring(t *testing.T) {
 					*lextypes.NewNumber("000"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(4),
+				Error: lexerrors.NewNumberExpectedError(4, -1),
 			},
 		},
 		{
@@ -142,7 +142,7 @@ func Test__Single_NoSign_Erroring(t *testing.T) {
 					*lextypes.NewNumber("0001"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(5),
+				Error: lexerrors.NewNumberExpectedError(5, -1),
 			},
 		},
 		{
@@ -152,7 +152,7 @@ func Test__Single_NoSign_Erroring(t *testing.T) {
 					*lextypes.NewNumber("000123"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(7),
+				Error: lexerrors.NewNumberExpectedError(7, -1),
 			},
 		},
 	})
@@ -264,7 +264,7 @@ func Test__Single_Plus_Signed_Erroring(t *testing.T) {
 					*lextypes.NewNumber("+0"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(3),
+				Error: lexerrors.NewNumberExpectedError(3, -1),
 			},
 		},
 		{
@@ -274,7 +274,7 @@ func Test__Single_Plus_Signed_Erroring(t *testing.T) {
 					*lextypes.NewNumber("+1"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(3),
+				Error: lexerrors.NewNumberExpectedError(3, -1),
 			},
 		},
 		{
@@ -284,7 +284,7 @@ func Test__Single_Plus_Signed_Erroring(t *testing.T) {
 					*lextypes.NewNumber("+01"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(4),
+				Error: lexerrors.NewNumberExpectedError(4, -1),
 			},
 		},
 		{
@@ -294,7 +294,7 @@ func Test__Single_Plus_Signed_Erroring(t *testing.T) {
 					*lextypes.NewNumber("+000"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(5),
+				Error: lexerrors.NewNumberExpectedError(5, -1),
 			},
 		},
 		{
@@ -304,7 +304,7 @@ func Test__Single_Plus_Signed_Erroring(t *testing.T) {
 					*lextypes.NewNumber("+0001"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(6),
+				Error: lexerrors.NewNumberExpectedError(6, -1),
 			},
 		},
 		{
@@ -314,7 +314,7 @@ func Test__Single_Plus_Signed_Erroring(t *testing.T) {
 					*lextypes.NewNumber("+000123"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(8),
+				Error: lexerrors.NewNumberExpectedError(8, -1),
 			},
 		},
 	})
@@ -426,7 +426,7 @@ func Test__Single_Minus_Signed_Erroring(t *testing.T) {
 					*lextypes.NewNumber("-0"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(3),
+				Error: lexerrors.NewNumberExpectedError(3, -1),
 			},
 		},
 		{
@@ -436,7 +436,7 @@ func Test__Single_Minus_Signed_Erroring(t *testing.T) {
 					*lextypes.NewNumber("-1"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(3),
+				Error: lexerrors.NewNumberExpectedError(3, -1),
 			},
 		},
 		{
@@ -446,7 +446,7 @@ func Test__Single_Minus_Signed_Erroring(t *testing.T) {
 					*lextypes.NewNumber("-01"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(4),
+				Error: lexerrors.NewNumberExpectedError(4, -1),
 			},
 		},
 		{
@@ -456,7 +456,7 @@ func Test__Single_Minus_Signed_Erroring(t *testing.T) {
 					*lextypes.NewNumber("-000"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(5),
+				Error: lexerrors.NewNumberExpectedError(5, -1),
 			},
 		},
 		{
@@ -466,7 +466,7 @@ func Test__Single_Minus_Signed_Erroring(t *testing.T) {
 					*lextypes.NewNumber("-0001"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(6),
+				Error: lexerrors.NewNumberExpectedError(6, -1),
 			},
 		},
 		{
@@ -476,7 +476,7 @@ func Test__Single_Minus_Signed_Erroring(t *testing.T) {
 					*lextypes.NewNumber("-000123"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(8),
+				Error: lexerrors.NewNumberExpectedError(8, -1),
 			},
 		},
 	})
@@ -493,7 +493,7 @@ func Test__MultiSigneds_Erroring(t *testing.T) {
 					*lextypes.NewNumber("0"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(3),
+				Error: lexerrors.NewNumberExpectedError(3),
 			},
 		},
 		{
@@ -503,7 +503,7 @@ func Test__MultiSigneds_Erroring(t *testing.T) {
 					*lextypes.NewNumber("-0"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(4),
+				Error: lexerrors.NewNumberExpectedError(4),
 			},
 		},
 		{
@@ -513,7 +513,7 @@ func Test__MultiSigneds_Erroring(t *testing.T) {
 					*lextypes.NewNumber("0"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(3),
+				Error: lexerrors.NewNumberExpectedError(3),
 			},
 		},
 		{
@@ -523,7 +523,7 @@ func Test__MultiSigneds_Erroring(t *testing.T) {
 					*lextypes.NewNumber("+1"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(4),
+				Error: lexerrors.NewNumberExpectedError(4),
 			},
 		},
 		{
@@ -533,7 +533,7 @@ func Test__MultiSigneds_Erroring(t *testing.T) {
 					*lextypes.NewNumber("-1"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(4),
+				Error: lexerrors.NewNumberExpectedError(4),
 			},
 		},
 		{
@@ -543,7 +543,7 @@ func Test__MultiSigneds_Erroring(t *testing.T) {
 					*lextypes.NewNumber("-12"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(5),
+				Error: lexerrors.NewNumberExpectedError(5),
 			},
 		},
 		{
@@ -553,7 +553,7 @@ func Test__MultiSigneds_Erroring(t *testing.T) {
 					*lextypes.NewNumber("+56"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(5),
+				Error: lexerrors.NewNumberExpectedError(5),
 			},
 		},
 		{
@@ -563,7 +563,7 @@ func Test__MultiSigneds_Erroring(t *testing.T) {
 					*lextypes.NewNumber("-123"),
 					*lextypes.NewPlus(),
 				},
-				Error: lexerrors.NewErrNumberExpected(6),
+				Error: lexerrors.NewNumberExpectedError(6),
 			},
 		},
 	})

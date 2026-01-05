@@ -25,6 +25,7 @@ func (s *State) Parse(ctx *ParserContext) ([]lextypes.Token, error) {
 	}
 	return tokens, &lexerrors.UnexpectedTokenError{
 		Position:  ctx.Position,
+		Rune: ctx.Rune(),
 		Expecteds: ctx.State.Expecteds,
 	}
 }
@@ -40,6 +41,9 @@ type ParserContext struct {
 }
 
 func (ctx *ParserContext) Rune() rune {
+	if !ctx.HasNext() {
+		return -1
+	}
 	return ctx.Runes[ctx.Position]
 }
 

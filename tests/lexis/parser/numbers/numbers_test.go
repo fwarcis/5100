@@ -310,7 +310,7 @@ func Test__MultiSigneds_Erroring(t *testing.T) {
 		cases = append(cases, parser.TestOfParser{
 			Input: inp,
 			Expected: &parser.Expected{
-				Error: lexerrors.NewErrNumberExpected(1),
+				Error: lexerrors.NewNumberExpectedError(1, []rune(inp)[1]),
 			},
 		})
 	}

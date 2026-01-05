@@ -20,7 +20,7 @@ func run(t *testing.T, opVal string, posOfUnexpect int) {
 		cases = append(cases, parser.TestOfParser{
 			Input: inp,
 			Expected: &parser.Expected{
-				Error: lexerrors.NewErrNumberExpected(posOfUnexpect),
+				Error: lexerrors.NewNumberExpectedError(posOfUnexpect, 1),
 			},
 		})
 	}
@@ -69,7 +69,7 @@ func Test__Jointly(t *testing.T) {
 		cases = append(cases, parser.TestOfParser{
 			Input: inp,
 			Expected: &parser.Expected{
-				Error: lexerrors.NewErrNumberExpected(charPosForErr),
+				Error: lexerrors.NewNumberExpectedError(charPosForErr, 1),
 			},
 		})
 	}
