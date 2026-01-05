@@ -21,7 +21,8 @@ func (*BinaryOperatorHandler) Handle(ctx *ParserContext) ([]lextypes.Token, bool
 		if subtext == string(variant) {
 			*ctx.State = *NewValueState()
 			ctx.Position += len(variant)
-			tokens := []lextypes.Token{*lextypes.BinOps[variant]()}
+			tokens := []lextypes.Token{
+				*lextypes.BinOpValsConstructors[variant]()}
 			if !ctx.HasNext() {
 				return tokens, false
 			}

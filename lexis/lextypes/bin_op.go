@@ -9,7 +9,7 @@ const (
 	DivValue   BinOpValue = "/"
 )
 
-var BinOps = map[BinOpValue](func() *Token){
+var BinOpValsConstructors = map[BinOpValue](func() *Token){
 	PlusValue:  NewPlus,
 	MinusValue: NewMinus,
 	MulValue:   NewMultiplication,
@@ -18,7 +18,7 @@ var BinOps = map[BinOpValue](func() *Token){
 
 var BinOpValues []BinOpValue = *func() *[]BinOpValue {
 	res := []BinOpValue{}
-	for op := range BinOps {
+	for op := range BinOpValsConstructors {
 		res = append(res, op)
 	}
 	return &res
