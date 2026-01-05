@@ -19,8 +19,7 @@ func Parse(tokens []lextypes.Token) Node {
 	}
 	return &Binary{
 		tokValue: tokValue{currentTok},
-		Left:  Parse(tokens[:slicingPos]),
-		Right: Parse(tokens[slicingPos+1:]),
+		Left:     Parse(tokens[:slicingPos]),
+		Right:    Parse(tokens[slicingPos+1:]),
 	}
 }
-

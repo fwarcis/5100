@@ -6,9 +6,8 @@ import (
 )
 
 type Lexer struct {
-	tokens []lextypes.Token
-	state  *lexstates.State
-	ctx    lexstates.ParserContext
+	state *lexstates.State
+	ctx   lexstates.ParserContext
 }
 
 func NewLexer(text string, state lexstates.State) *Lexer {
