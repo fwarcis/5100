@@ -1,7 +1,6 @@
 package semantics
 
 import (
-	"fmt"
 	"strconv"
 
 	"5100/lexis/lextypes"
@@ -10,7 +9,7 @@ import (
 
 func Evaluate(expr syntax.Node) (float64, error) {
 	if expr == nil {
-		return 0, fmt.Errorf("")
+		return 0, &NilNodeError{}
 	}
 
 	tok := expr.Token()
@@ -23,7 +22,7 @@ func Evaluate(expr syntax.Node) (float64, error) {
 	case *syntax.Binary:
 		operate := binOpValsFuncs[lextypes.BinOpValue(tok.Value)]
 		if node.Left == nil || node.Right == nil {
-			return 0, fmt.Errorf("")
+			return 0, &NilNodeError{}
 		}
 		leftVal, err := Evaluate(node.Left)
 		if err != nil {
@@ -35,5 +34,5 @@ func Evaluate(expr syntax.Node) (float64, error) {
 		}
 		return operate(leftVal, rightVal), nil
 	}
-	return 0, fmt.Errorf("")
+	return 0, &UnexpectedNodeTypeError{}
 }
