@@ -2,9 +2,9 @@ package semantics
 
 import "5100/lexis/lextypes"
 
-type BinaryOperatorFunc func(left, right float64) float64
+type BinOpFunc func(left, right float64) float64
 
-var BinOpFuncs = map[lextypes.BinOpValue]BinaryOperatorFunc{
+var BinOpValsFuncs = map[lextypes.BinOpValue]BinOpFunc{
 	lextypes.PlusValue:  sum,
 	lextypes.MinusValue: sub,
 	lextypes.MulValue:   mul,

@@ -21,7 +21,7 @@ func Evaluate(expr syntax.Node) (float64, error) {
 			return val, err
 		}
 	case *syntax.Binary:
-		operate := BinOpFuncs[lextypes.BinOpValue(tok.Value)]
+		operate := BinOpValsFuncs[lextypes.BinOpValue(tok.Value)]
 		if node.Left == nil || node.Right == nil {
 			return 0, fmt.Errorf("")
 		}
