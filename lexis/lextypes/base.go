@@ -10,8 +10,8 @@ const (
 )
 
 type Token struct {
-	Value    string
-	Type     TokenType
+	Value string
+	Type  TokenType
 }
 
 func (tok Token) String() string {

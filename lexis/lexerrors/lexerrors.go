@@ -17,14 +17,14 @@ func withPrefix(text string, r rune, position int) string {
 
 type UnexpectedTokenError struct {
 	Position  int
-	Rune rune
+	Rune      rune
 	Expecteds []lextypes.TokenType
 }
 
 func NewNumberExpectedError(position int, r rune) *UnexpectedTokenError {
 	return &UnexpectedTokenError{
 		Position:  position,
-		Rune: r,
+		Rune:      r,
 		Expecteds: []lextypes.TokenType{lextypes.NumberType},
 	}
 }

@@ -25,7 +25,7 @@ func (s *State) Parse(ctx *ParserContext) ([]lextypes.Token, error) {
 	}
 	return tokens, &lexerrors.UnexpectedTokenError{
 		Position:  ctx.Position,
-		Rune: ctx.Rune(),
+		Rune:      ctx.Rune(),
 		Expecteds: ctx.State.Expecteds,
 	}
 }

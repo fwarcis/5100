@@ -26,28 +26,28 @@ var BinOpValues []BinOpValue = *func() *[]BinOpValue {
 
 func NewPlus() *Token {
 	return &Token{
-		Value:    string(PlusValue),
-		Type:     BinOpType,
+		Value: string(PlusValue),
+		Type:  BinOpType,
 	}
 }
 
 func NewMinus() *Token {
 	return &Token{
-		Value:    string(MinusValue),
-		Type:     BinOpType,
+		Value: string(MinusValue),
+		Type:  BinOpType,
 	}
 }
 
 func NewMultiplication() *Token {
 	return &Token{
-		Value:    string(MulValue),
-		Type:     BinOpType,
+		Value: string(MulValue),
+		Type:  BinOpType,
 	}
 }
 
 func NewDivision() *Token {
 	return &Token{
-		Value:    string(DivValue),
-		Type:     BinOpType,
+		Value: string(DivValue),
+		Type:  BinOpType,
 	}
 }
