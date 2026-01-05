@@ -5,14 +5,14 @@ import (
 )
 
 type Node interface {
-	Get() lextypes.Token
+	Token() lextypes.Token
 }
 
 type Value struct {
 	value lextypes.Token
 }
 
-func (v *Value) Get() lextypes.Token {
+func (v *Value) Token() lextypes.Token {
 	return v.value
 }
 

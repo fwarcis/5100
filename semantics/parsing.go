@@ -13,7 +13,7 @@ func Evaluate(expr syntax.Node) (float64, error) {
 		return 0, fmt.Errorf("")
 	}
 
-	tok := expr.Get()
+	tok := expr.Token()
 	switch node := expr.(type) {
 	case *syntax.Unary:
 		if tok.Type == lextypes.NumberType {
