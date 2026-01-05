@@ -11,12 +11,12 @@ func priority(tok lextypes.Token) int {
 	case lextypes.NumberType:
 		return 100000
 	case lextypes.BinOpType:
-		return BinOpValsPriorities[lextypes.BinOpValue(tok.Value)]
+		return binOpValsPriorities[lextypes.BinOpValue(tok.Value)]
 	}
 	panic(fmt.Sprintf("unexpected token type '%s'", tok.Type))
 }
 
-var BinOpValsPriorities = map[lextypes.BinOpValue]int{
+var binOpValsPriorities = map[lextypes.BinOpValue]int{
 	lextypes.PlusValue:  100,
 	lextypes.MinusValue: 100,
 	lextypes.MulValue:   200,

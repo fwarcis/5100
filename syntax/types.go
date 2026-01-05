@@ -8,21 +8,21 @@ type Node interface {
 	Token() lextypes.Token
 }
 
-type Value struct {
+type tokValue struct {
 	value lextypes.Token
 }
 
-func (v *Value) Token() lextypes.Token {
+func (v *tokValue) Token() lextypes.Token {
 	return v.value
 }
 
 type Unary struct {
-	Value
+	tokValue
 	Next Node
 }
 
 type Binary struct {
-	Value
+	tokValue
 	Left  Node
 	Right Node
 }

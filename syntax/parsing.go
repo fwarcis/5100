@@ -15,10 +15,10 @@ func Parse(tokens []lextypes.Token) Node {
 	}
 
 	if currentTok.Type == lextypes.NumberType {
-		return &Unary{Value: Value{currentTok}}
+		return &Unary{tokValue: tokValue{currentTok}}
 	}
 	return &Binary{
-		Value: Value{currentTok},
+		tokValue: tokValue{currentTok},
 		Left:  Parse(tokens[:slicingPos]),
 		Right: Parse(tokens[slicingPos+1:]),
 	}
