@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
 
 	"5100/lexis"
 	"5100/lexis/lexstates"
@@ -11,11 +14,13 @@ import (
 
 func main() {
 	var err error
+	rdr := bufio.NewReader(os.Stdin)
 	for input := ""; input != "exit"; {
 		fmt.Println()
 		fmt.Print("<< ")
 
-		_, err = fmt.Scanln(&input)
+		input, err = rdr.ReadString('\n')
+		input = strings.TrimSuffix(input, "\n")
 		if err != nil {
 			fmt.Println(err.Error())
 			continue
