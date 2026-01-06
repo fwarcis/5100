@@ -18,7 +18,7 @@ func priority(tok lextypes.Token) int {
 
 var binOpValsPriorities = map[lextypes.BinOpValue]int{
 	lextypes.PlusValue:  100,
-	lextypes.MinusValue: 100,
+	lextypes.MinusValue: 110,
 	lextypes.MulValue:   200,
 	lextypes.DivValue:   200,
 }
