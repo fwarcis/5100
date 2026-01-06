@@ -13,10 +13,12 @@ type State struct {
 func (s *State) Parse(ctx *ParserContext) ([]lextypes.Token, error) {
 	tokens := []lextypes.Token{}
 	nextTokPos := ctx.Position
+	state := *s
 	for i, h := range s.Handlers {
 		toks, ok := h.Handle(ctx)
 		tokens = toks
 		if ok {
+			ctx.PreviousState = &state
 			return tokens, nil
 		} else if i+1 == len(s.Handlers) {
 			break
@@ -35,13 +37,14 @@ type Handler interface {
 }
 
 type ParserContext struct {
-	State    *State
-	Runes    []rune
-	Position int
+	State         *State
+	PreviousState *State
+	Runes         []rune
+	Position      int
 }
 
 func (ctx *ParserContext) Rune() rune {
-	if !ctx.HasNext() {
+	if !ctx.HasRuneOnPosition() {
 		return -1
 	}
 	return ctx.Runes[ctx.Position]
@@ -51,6 +54,6 @@ func (ctx *ParserContext) CurrentRunes() []rune {
 	return ctx.Runes[ctx.Position:]
 }
 
-func (ctx *ParserContext) HasNext() bool {
+func (ctx *ParserContext) HasRuneOnPosition() bool {
 	return ctx.Position < len(ctx.Runes)
 }

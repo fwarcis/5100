@@ -21,7 +21,7 @@ func NewLexer(text string, state lexstates.State) *Lexer {
 }
 
 func (l *Lexer) Parse() (tokens []lextypes.Token, err error) {
-	for err == nil && l.ctx.HasNext() {
+	for err == nil && l.ctx.HasRuneOnPosition() {
 		toks, e := l.state.Parse(&l.ctx)
 		err = e
 		tokens = append(tokens, toks...)
